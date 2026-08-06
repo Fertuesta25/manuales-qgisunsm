@@ -434,7 +434,7 @@
 #show: book.with(
   title: [Manual de Prácticas de SIG],
   subtitle: [Muestreo espacial e índices satelitales con QGIS 4.2 y R],
-  author: "Fernando Michel Tuesta Chichipe",
+  author: "Fernando Michel Tuesta Chichipe, Javier Ormeño Luna",
   date: "2026-08-06",
   lang: "es",
   main-color: brand-color.at("primary", default: blue),
