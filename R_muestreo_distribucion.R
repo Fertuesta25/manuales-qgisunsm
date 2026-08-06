@@ -1,3 +1,6 @@
+install.packages(c("sf","terra","spatstat","gstat","tmap","dplyr","units",
+                   "exactextractr","tidyterra"))
+
 library(sf)        # vectores
 library(terra)     # rasters
 library(spatstat)  # análisis de patrones de puntos
