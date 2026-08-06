@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>2&nbsp; Índices satelitales aplicados a la agricultura – Manual de Prácticas de SIG</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./references.html" rel="next">
+<link href="./manual1-muestreo-distribucion.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-8c7a852521fe7561e119429241fca615.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No se han encontrado resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./manual2-indices-satelitales.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Índices satelitales aplicados a la agricultura</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Manual de Prácticas de SIG</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Presentación</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./manual1-muestreo-distribucion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Muestreo y su distribución espacial</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./manual2-indices-satelitales.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Índices satelitales aplicados a la agricultura</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referencias</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#introducción" id="toc-introducción" class="nav-link active" data-scroll-target="#introducción"><span class="header-section-number">2.1</span> Introducción</a>
+  <ul class="collapse">
+  <li><a href="#objetivos" id="toc-objetivos" class="nav-link" data-scroll-target="#objetivos"><span class="header-section-number">2.1.1</span> Objetivos</a></li>
+  <li><a href="#materiales-y-requisitos" id="toc-materiales-y-requisitos" class="nav-link" data-scroll-target="#materiales-y-requisitos"><span class="header-section-number">2.1.2</span> Materiales y requisitos</a></li>
+  <li><a href="#sec-bandas" id="toc-sec-bandas" class="nav-link" data-scroll-target="#sec-bandas"><span class="header-section-number">2.1.3</span> Correspondencia de bandas</a></li>
+  </ul></li>
+  <li><a href="#sec-descarga" id="toc-sec-descarga" class="nav-link" data-scroll-target="#sec-descarga"><span class="header-section-number">2.2</span> Descarga de la imagen satelital</a></li>
+  <li><a href="#sec-carga" id="toc-sec-carga" class="nav-link" data-scroll-target="#sec-carga"><span class="header-section-number">2.3</span> Carga de bandas y composiciones</a></li>
+  <li><a href="#sec-recorte" id="toc-sec-recorte" class="nav-link" data-scroll-target="#sec-recorte"><span class="header-section-number">2.4</span> Recorte al área de estudio</a></li>
+  <li><a href="#sec-indices" id="toc-sec-indices" class="nav-link" data-scroll-target="#sec-indices"><span class="header-section-number">2.5</span> Cálculo de índices con la Calculadora ráster</a>
+  <ul class="collapse">
+  <li><a href="#ndvi-índice-de-vegetación-de-diferencia-normalizada-rouse1974" id="toc-ndvi-índice-de-vegetación-de-diferencia-normalizada-rouse1974" class="nav-link" data-scroll-target="#ndvi-índice-de-vegetación-de-diferencia-normalizada-rouse1974"><span class="header-section-number">2.5.1</span> NDVI — Índice de Vegetación de Diferencia Normalizada <span class="citation" data-cites="rouse1974">(Rouse et&nbsp;al. 1974)</span></a></li>
+  <li><a href="#otros-índices-útiles" id="toc-otros-índices-útiles" class="nav-link" data-scroll-target="#otros-índices-útiles"><span class="header-section-number">2.5.2</span> Otros índices útiles</a></li>
+  </ul></li>
+  <li><a href="#sec-simbologia" id="toc-sec-simbologia" class="nav-link" data-scroll-target="#sec-simbologia"><span class="header-section-number">2.6</span> Simbología y clases de vigor</a></li>
+  <li><a href="#sec-zonal" id="toc-sec-zonal" class="nav-link" data-scroll-target="#sec-zonal"><span class="header-section-number">2.7</span> Estadísticas por parcela</a></li>
+  <li><a href="#sec-layout2" id="toc-sec-layout2" class="nav-link" data-scroll-target="#sec-layout2"><span class="header-section-number">2.8</span> Composición del mapa final</a></li>
+  <li><a href="#producto-de-la-práctica" id="toc-producto-de-la-práctica" class="nav-link" data-scroll-target="#producto-de-la-práctica"><span class="header-section-number">2.9</span> Producto de la práctica</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title"><span id="sec-practica2" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Índices satelitales aplicados a la agricultura</span></span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Código</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Mostrar todo el código</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Ocultar todo el código</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">Ver el código fuente</a></li></ul></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p><strong>Curso:</strong> Sistema de Información Geográfica (0101140064) · Escuela Profesional de Agronomía · UNSM-T <strong>Unidad III · Semanas 14–15</strong> — Teledetección, descarga de imágenes satelitales y cálculo del NDVI. <strong>Software:</strong> QGIS 4.0 “Norrköping” (Qt6). Válido también en QGIS 3.44 LTR.</p>
+</div>
+</div>
+</div>
+<section id="introducción" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="introducción"><span class="header-section-number">2.1</span> Introducción</h2>
+<p>Los sensores satelitales miden la energía que la superficie refleja en distintas longitudes de onda (<strong>bandas espectrales</strong>). La vegetación sana refleja mucho en el <strong>infrarrojo cercano (NIR)</strong> y absorbe en el <strong>rojo</strong> (por la clorofila): esa diferencia es la base de los <strong>índices de vegetación</strong>, que resumen el vigor del cultivo en un solo número por píxel.</p>
+<p>En esta práctica descargaremos una imagen satelital, calcularemos varios índices y evaluaremos el estado del cultivo por lote. En cada paso se incluye el <strong>equivalente en R</strong> con el paquete <code>terra</code>, para migrar la práctica a código.</p>
+<section id="objetivos" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="objetivos"><span class="header-section-number">2.1.1</span> Objetivos</h3>
+<ul>
+<li>Descargar imágenes Sentinel-2 / Landsat de portales gratuitos.</li>
+<li>Componer bandas (color natural y falso color) y recortar al área de estudio.</li>
+<li>Calcular NDVI y otros índices con la Calculadora ráster.</li>
+<li>Clasificar el vigor y obtener estadísticas por parcela.</li>
+</ul>
+</section>
+<section id="materiales-y-requisitos" class="level3" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="materiales-y-requisitos"><span class="header-section-number">2.1.2</span> Materiales y requisitos</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Recurso</th>
+<th>Detalle</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Software</td>
+<td>QGIS 4.0 (o 3.44 LTR)</td>
+</tr>
+<tr class="even">
+<td>Imagen</td>
+<td>Sentinel-2 (10 m) o Landsat 8/9 (30 m)</td>
+</tr>
+<tr class="odd">
+<td>Portales</td>
+<td>Copernicus Browser, USGS EarthExplorer, LandViewer</td>
+</tr>
+<tr class="even">
+<td>Límite de parcelas</td>
+<td>Capa vectorial (<code>.gpkg</code> / <code>.shp</code>)</td>
+</tr>
+<tr class="odd">
+<td>Opcional (versión R)</td>
+<td>R ≥ 4.3 con <code>terra</code>, <code>sf</code>, <code>tmap</code>, <code>exactextractr</code>, <code>tidyterra</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="sec-bandas" class="level3" data-number="2.1.3">
+<h3 data-number="2.1.3" class="anchored" data-anchor-id="sec-bandas"><span class="header-section-number">2.1.3</span> Correspondencia de bandas</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Uso</th>
+<th>Sentinel-2</th>
+<th>Landsat 8/9</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Azul</td>
+<td>B2</td>
+<td>B2</td>
+</tr>
+<tr class="even">
+<td>Verde</td>
+<td>B3</td>
+<td>B3</td>
+</tr>
+<tr class="odd">
+<td><strong>Rojo</strong></td>
+<td><strong>B4</strong></td>
+<td><strong>B4</strong></td>
+</tr>
+<tr class="even">
+<td>Borde rojo (Red-edge)</td>
+<td>B5</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td><strong>NIR</strong></td>
+<td><strong>B8</strong></td>
+<td><strong>B5</strong></td>
+</tr>
+<tr class="even">
+<td>SWIR-1</td>
+<td>B11</td>
+<td>B6</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+</section>
+<section id="sec-descarga" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="sec-descarga"><span class="header-section-number">2.2</span> Descarga de la imagen satelital</h2>
+<p>Este paso se hace en el <strong>navegador web</strong> (fuera de QGIS). Usaremos el Copernicus Browser (Sentinel-2), pero EarthExplorer o LandViewer son equivalentes.</p>
+<ol type="1">
+<li>Ingresa a Copernicus Browser y crea una cuenta gratuita.</li>
+<li>Ubica tu zona de estudio en el mapa.</li>
+<li>Filtra por <strong>fecha</strong> y por <strong>cobertura de nubes</strong> (busca &lt; 10 %).</li>
+<li>Selecciona un producto <strong>Sentinel-2 L2A</strong> (reflectancia de superficie, ya corregida atmosféricamente).</li>
+<li>Descarga las bandas necesarias (mínimo B4 y B8; añade B3, B5, B11 para más índices).</li>
+</ol>
+<div id="fig-m2-descarga" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-m2-descarga-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/m2-01-descarga.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figura&nbsp;2.1: Selección de la escena Sentinel-2 en el portal de descarga. 📸 Capturar: el navegador web con la escena seleccionada, el filtro de fecha y el porcentaje de nubes visible."><img src="images/m2-01-descarga.png" class="img-fluid figure-img" style="width:95.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-m2-descarga-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2.1: Selección de la escena Sentinel-2 en el portal de descarga. <strong>📸 Capturar:</strong> el navegador web con la escena seleccionada, el filtro de fecha y el porcentaje de nubes visible.
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nota
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>L2A vs.&nbsp;L1C:</strong> usa siempre <strong>L2A</strong> (reflectancia de superficie) para calcular índices; L1C es reflectancia en el tope de la atmósfera y requiere corrección previa.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="sec-carga" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="sec-carga"><span class="header-section-number">2.3</span> Carga de bandas y composiciones</h2>
+<ol type="1">
+<li><strong>Capa ▸ Añadir capa ▸ Añadir capa ráster</strong> y carga cada banda (o el producto completo).</li>
+<li><strong>Color natural (RGB):</strong> doble clic en la capa ▸ Simbología ▸ <em>Multibanda color</em> ▸ R=B4, G=B3, B=B2.</li>
+<li><strong>Falso color (vegetación en rojo):</strong> R=B8, G=B4, B=B3. La vegetación vigorosa aparece en tonos rojos intensos.</li>
+</ol>
+<div id="fig-m2-falsocolor" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-m2-falsocolor-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/m2-02-falsocolor.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figura&nbsp;2.2: Composición en falso color de la zona de estudio. 📸 Capturar: el lienzo con la composición falso color (NIR-Rojo-Verde), donde la vegetación resalta en rojo."><img src="images/m2-02-falsocolor.png" class="img-fluid figure-img" style="width:95.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-m2-falsocolor-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2.2: Composición en falso color de la zona de estudio. <strong>📸 Capturar:</strong> el lienzo con la composición falso color (NIR-Rojo-Verde), donde la vegetación resalta en rojo.
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>🔵 Equivalente en R
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(exactextractr)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Cargar bandas (ajusta rutas/nombres a tu descarga)</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>b3 <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"data/S2_B03.tif"</span>)  <span class="co"># Verde</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>b4 <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"data/S2_B04.tif"</span>)  <span class="co"># Rojo</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>b5 <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"data/S2_B05.tif"</span>)  <span class="co"># Borde rojo</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>b8 <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"data/S2_B08.tif"</span>)  <span class="co"># NIR</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Composición falso color (NIR-Rojo-Verde)</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>falso <span class="ot">&lt;-</span> <span class="fu">c</span>(b8, b4, b3)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plotRGB</span>(falso, <span class="at">r =</span> <span class="dv">1</span>, <span class="at">g =</span> <span class="dv">2</span>, <span class="at">b =</span> <span class="dv">3</span>, <span class="at">stretch =</span> <span class="st">"lin"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="sec-recorte" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="sec-recorte"><span class="header-section-number">2.4</span> Recorte al área de estudio</h2>
+<p>Trabajar sobre toda la escena es lento; recortamos a nuestras parcelas.</p>
+<ol type="1">
+<li>Carga la capa de parcelas (asegura mismo SRC que el ráster).</li>
+<li>Caja de herramientas ▸ <strong>Extracción de ráster ▸ Cortar ráster por capa de máscara</strong>.</li>
+<li>Capa de entrada: la banda (o cada banda); capa de máscara: las parcelas. Ejecuta.</li>
+</ol>
+<div id="fig-m2-recorte" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-m2-recorte-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/m2-03-recorte.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figura&nbsp;2.3: Bandas recortadas al límite de las parcelas. 📸 Capturar: el diálogo “Cortar ráster por capa de máscara” y el resultado recortado sobre el área de trabajo."><img src="images/m2-03-recorte.png" class="img-fluid figure-img" style="width:95.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-m2-recorte-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2.3: Bandas recortadas al límite de las parcelas. <strong>📸 Capturar:</strong> el diálogo “Cortar ráster por capa de máscara” y el resultado recortado sobre el área de trabajo.
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>🔵 Equivalente en R
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>parcelas <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/parcelas.gpkg"</span>) <span class="sc">|&gt;</span> <span class="fu">st_transform</span>(<span class="fu">crs</span>(b8))</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>recortar <span class="ot">&lt;-</span> <span class="cf">function</span>(r) <span class="fu">crop</span>(<span class="fu">mask</span>(r, <span class="fu">vect</span>(parcelas)), <span class="fu">vect</span>(parcelas))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>b3 <span class="ot">&lt;-</span> <span class="fu">recortar</span>(b3); b4 <span class="ot">&lt;-</span> <span class="fu">recortar</span>(b4); b5 <span class="ot">&lt;-</span> <span class="fu">recortar</span>(b5); b8 <span class="ot">&lt;-</span> <span class="fu">recortar</span>(b8)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="sec-indices" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="sec-indices"><span class="header-section-number">2.5</span> Cálculo de índices con la Calculadora ráster</h2>
+<p>Abre <strong>Ráster ▸ Calculadora ráster</strong> (o desde la Caja de herramientas: <em>Análisis ráster ▸ Calculadora ráster</em>).</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Importante
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Si tus bandas están en enteros escalados (DN), primero conviértelas a reflectancia (típicamente dividir entre 10000 en Sentinel-2 L2A). Trabaja con <strong>decimales</strong>.</p>
+</div>
+</div>
+<section id="ndvi-índice-de-vegetación-de-diferencia-normalizada-rouse1974" class="level3" data-number="2.5.1">
+<h3 data-number="2.5.1" class="anchored" data-anchor-id="ndvi-índice-de-vegetación-de-diferencia-normalizada-rouse1974"><span class="header-section-number">2.5.1</span> NDVI — Índice de Vegetación de Diferencia Normalizada <span class="citation" data-cites="rouse1974">(<a href="references.html#ref-rouse1974" role="doc-biblioref">Rouse et&nbsp;al. 1974</a>)</span></h3>
+<p><span class="math display">\[NDVI = \frac{NIR - Rojo}{NIR + Rojo}\]</span></p>
+<p>En la Calculadora ráster escribe (Sentinel-2):</p>
+<pre><code>("B8@1" - "B4@1") / ("B8@1" + "B4@1")</code></pre>
+<p>Para <strong>Landsat 8/9</strong> usa <code>("B5@1" - "B4@1") / ("B5@1" + "B4@1")</code>. El NDVI varía de −1 a 1: valores altos (0.6–0.9) indican vegetación densa y vigorosa; cercanos a 0, suelo desnudo; negativos, agua.</p>
+<div id="fig-m2-ndvi" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-m2-ndvi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/m2-04-ndvi.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figura&nbsp;2.4: Cálculo del NDVI en la Calculadora ráster. 📸 Capturar: el diálogo de la Calculadora con la expresión del NDVI escrita, y el ráster NDVI resultante."><img src="images/m2-04-ndvi.png" class="img-fluid figure-img" style="width:95.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-m2-ndvi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2.4: Cálculo del NDVI en la Calculadora ráster. <strong>📸 Capturar:</strong> el diálogo de la Calculadora con la expresión del NDVI escrita, y el ráster NDVI resultante.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="otros-índices-útiles" class="level3" data-number="2.5.2">
+<h3 data-number="2.5.2" class="anchored" data-anchor-id="otros-índices-útiles"><span class="header-section-number">2.5.2</span> Otros índices útiles</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Índice</th>
+<th>Fórmula (Sentinel-2)</th>
+<th>Uso</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>SAVI</strong> <span class="citation" data-cites="huete1988">(<a href="references.html#ref-huete1988" role="doc-biblioref">Huete 1988</a>)</span></td>
+<td><code>1.5*(B8-B4)/(B8+B4+0.5)</code></td>
+<td>Corrige el efecto del suelo en cobertura baja</td>
+</tr>
+<tr class="even">
+<td><strong>GNDVI</strong></td>
+<td><code>(B8-B3)/(B8+B3)</code></td>
+<td>Sensible al contenido de clorofila</td>
+</tr>
+<tr class="odd">
+<td><strong>NDRE</strong></td>
+<td><code>(B8-B5)/(B8+B5)</code></td>
+<td>Estrés en cultivos densos (usa borde rojo)</td>
+</tr>
+<tr class="even">
+<td><strong>NDWI</strong></td>
+<td><code>(B3-B8)/(B3+B8)</code></td>
+<td>Contenido de agua / detección de cuerpos de agua</td>
+</tr>
+</tbody>
+</table>
+<div id="fig-m2-indices" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-m2-indices-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/m2-05-indices.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Figura&nbsp;2.5: Comparación de índices (NDVI vs.&nbsp;otro índice). 📸 Capturar: dos rásters de índices lado a lado con su rampa de color."><img src="images/m2-05-indices.png" class="img-fluid figure-img" style="width:95.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-m2-indices-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2.5: Comparación de índices (NDVI vs.&nbsp;otro índice). <strong>📸 Capturar:</strong> dos rásters de índices lado a lado con su rampa de color.
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>🔵 Equivalente en R
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (si vienen escalados, primero: b4 &lt;- b4/10000, etc.)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ndvi  <span class="ot">&lt;-</span> (b8 <span class="sc">-</span> b4) <span class="sc">/</span> (b8 <span class="sc">+</span> b4)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>savi  <span class="ot">&lt;-</span> <span class="fl">1.5</span> <span class="sc">*</span> (b8 <span class="sc">-</span> b4) <span class="sc">/</span> (b8 <span class="sc">+</span> b4 <span class="sc">+</span> <span class="fl">0.5</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>gndvi <span class="ot">&lt;-</span> (b8 <span class="sc">-</span> b3) <span class="sc">/</span> (b8 <span class="sc">+</span> b3)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>ndre  <span class="ot">&lt;-</span> (b8 <span class="sc">-</span> b5) <span class="sc">/</span> (b8 <span class="sc">+</span> b5)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ndvi, <span class="at">main =</span> <span class="st">"NDVI"</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">global</span>(ndvi, <span class="at">fun =</span> <span class="st">"mean"</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)   <span class="co"># NDVI medio de la escena</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="sec-simbologia" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="sec-simbologia"><span class="header-section-number">2.6</span> Simbología y clases de vigor</h2>
+<ol type="1">
+<li>Doble clic en el ráster NDVI ▸ <strong>Simbología</strong>.</li>
+<li>Tipo de renderizado: <strong>Pseudocolor de banda simple</strong>.</li>
+<li>Rampa de color <strong>RdYlGn</strong> (rojo = bajo vigor, verde = alto vigor).</li>
+<li>Modo <em>Clasificar</em> con cortes interpretables, p.&nbsp;ej.:</li>
+</ol>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Clase</th>
+<th>Rango NDVI</th>
+<th>Interpretación</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Muy bajo</td>
+<td>&lt; 0.2</td>
+<td>Suelo desnudo / sin cultivo</td>
+</tr>
+<tr class="even">
+<td>Bajo</td>
+<td>0.2 – 0.4</td>
+<td>Vegetación escasa / estrés</td>
+</tr>
+<tr class="odd">
+<td>Medio</td>
+<td>0.4 – 0.6</td>
+<td>Vigor moderado</td>
+</tr>
+<tr class="even">
+<td>Alto</td>
+<td>0.6 – 0.8</td>
+<td>Vigor bueno</td>
+</tr>
+<tr class="odd">
+<td>Muy alto</td>
+<td>&gt; 0.8</td>
+<td>Cobertura densa</td>
+</tr>
+</tbody>
+</table>
+<div id="fig-m2-clases" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-m2-clases-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/m2-06-clases.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Figura&nbsp;2.6: NDVI clasificado en niveles de vigor. 📸 Capturar: el panel de Simbología en modo Pseudocolor con los cortes definidos, y el mapa NDVI clasificado."><img src="images/m2-06-clases.png" class="img-fluid figure-img" style="width:95.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-m2-clases-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2.6: NDVI clasificado en niveles de vigor. <strong>📸 Capturar:</strong> el panel de Simbología en modo Pseudocolor con los cortes definidos, y el mapa NDVI clasificado.
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>🔵 Equivalente en R
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>rcl <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="fl">0.2</span>, <span class="dv">1</span>,</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                <span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="dv">2</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                <span class="fl">0.4</span>, <span class="fl">0.6</span>, <span class="dv">3</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                <span class="fl">0.6</span>, <span class="fl">0.8</span>, <span class="dv">4</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                <span class="fl">0.8</span>,   <span class="dv">1</span>, <span class="dv">5</span>), <span class="at">ncol =</span> <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>ndvi_clases <span class="ot">&lt;-</span> <span class="fu">classify</span>(ndvi, rcl)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(ndvi) <span class="sc">+</span> <span class="fu">tm_raster</span>(<span class="at">palette =</span> <span class="st">"RdYlGn"</span>, <span class="at">title =</span> <span class="st">"NDVI"</span>) <span class="sc">+</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span>, <span class="at">frame =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="sec-zonal" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="sec-zonal"><span class="header-section-number">2.7</span> Estadísticas por parcela</h2>
+<p>Para llevar el NDVI a una tabla de decisión (media por lote).</p>
+<ol type="1">
+<li>Caja de herramientas ▸ <strong>Análisis ráster ▸ Estadísticas zonales</strong>.</li>
+<li>Capa de polígonos: parcelas; capa ráster: NDVI; estadísticas: media, mínimo, máximo, desviación.</li>
+<li>Ejecuta: se añaden columnas a la tabla de atributos de las parcelas.</li>
+</ol>
+<div id="fig-m2-zonal" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-m2-zonal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/m2-07-zonal.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Figura&nbsp;2.7: Estadísticas zonales de NDVI por parcela. 📸 Capturar: la tabla de atributos de las parcelas con la columna de NDVI medio, y el mapa coloreado por ese valor."><img src="images/m2-07-zonal.png" class="img-fluid figure-img" style="width:95.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-m2-zonal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2.7: Estadísticas zonales de NDVI por parcela. <strong>📸 Capturar:</strong> la tabla de atributos de las parcelas con la columna de NDVI medio, y el mapa coloreado por ese valor.
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>🔵 Equivalente en R
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>parcelas<span class="sc">$</span>ndvi_medio <span class="ot">&lt;-</span> <span class="fu">exact_extract</span>(ndvi, parcelas, <span class="st">"mean"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>parcelas<span class="sc">$</span>ndvi_min   <span class="ot">&lt;-</span> <span class="fu">exact_extract</span>(ndvi, parcelas, <span class="st">"min"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>parcelas<span class="sc">$</span>ndvi_max   <span class="ot">&lt;-</span> <span class="fu">exact_extract</span>(ndvi, parcelas, <span class="st">"max"</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>parcelas[<span class="fu">order</span>(parcelas<span class="sc">$</span>ndvi_medio), <span class="fu">c</span>(<span class="st">"id"</span>, <span class="st">"ndvi_medio"</span>)]</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="sec-layout2" class="level2" data-number="2.8">
+<h2 data-number="2.8" class="anchored" data-anchor-id="sec-layout2"><span class="header-section-number">2.8</span> Composición del mapa final</h2>
+<ol type="1">
+<li><strong>Proyecto ▸ Nueva composición de impresión</strong>.</li>
+<li>Inserta el mapa NDVI (o una lámina comparando índices) con <strong>título, leyenda, escala, norte, grilla y membrete</strong> (logo UNSM, autor, fecha, satélite y fecha de la imagen).</li>
+<li><strong>Exportar como PDF / imagen</strong>.</li>
+</ol>
+<div id="fig-m2-layout" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-m2-layout-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/m2-08-layout.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="Figura&nbsp;2.8: Composición final con el mapa de NDVI. 📸 Capturar: el diseñador de impresión con el mapa de índice, leyenda de vigor, escala, norte, grilla y membrete."><img src="images/m2-08-layout.png" class="img-fluid figure-img" style="width:95.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-m2-layout-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2.8: Composición final con el mapa de NDVI. <strong>📸 Capturar:</strong> el diseñador de impresión con el mapa de índice, leyenda de vigor, escala, norte, grilla y membrete.
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>🔵 Equivalente en R
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>mapa_ndvi <span class="ot">&lt;-</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(ndvi) <span class="sc">+</span> <span class="fu">tm_raster</span>(<span class="at">palette =</span> <span class="st">"RdYlGn"</span>, <span class="at">title =</span> <span class="st">"NDVI"</span>, <span class="at">style =</span> <span class="st">"cont"</span>) <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(parcelas) <span class="sc">+</span> <span class="fu">tm_borders</span>(<span class="at">col =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_compass</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"top"</span>)) <span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_scale_bar</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"bottom"</span>)) <span class="sc">+</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">"NDVI por parcela"</span>, <span class="at">legend.outside =</span> <span class="cn">TRUE</span>, <span class="at">frame =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_save</span>(mapa_ndvi, <span class="st">"images/mapa_ndvi_R.png"</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Descarga por código (opcional, para tu versión 100 % R)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Para automatizar la descarga sin el portal web puedes usar <code>rstac</code> (Planetary Computer / AWS) o el paquete <code>rsi</code>, que trae <code>get_sentinel2_imagery()</code> y helpers para calcular índices directamente sobre el cubo descargado.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="producto-de-la-práctica" class="level2" data-number="2.9">
+<h2 data-number="2.9" class="anchored" data-anchor-id="producto-de-la-práctica"><span class="header-section-number">2.9</span> Producto de la práctica</h2>
+<p>Entrega un mapa temático (PDF/JPEG) con:</p>
+<ul>
+<li>El NDVI clasificado en niveles de vigor sobre tus parcelas.</li>
+<li>La tabla de NDVI medio por parcela (estadísticas zonales).</li>
+<li>Todos los elementos cartográficos, indicando <strong>satélite, fecha de la imagen y % de nubes</strong>.</li>
+</ul>
+<p>Y una breve interpretación (½ página): ¿qué parcelas muestran menor vigor y qué manejo agronómico sugerirías?</p>
+
+
+<!-- -->
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-baddeley2005" class="csl-entry" role="listitem">
+Baddeley, A., y R. Turner. 2005. <span>«spatstat: An R Package for Analyzing Spatial Point Patterns»</span>. <em>Journal of Statistical Software</em> 12 (6): 1-42.
+</div>
+<div id="ref-huete1988" class="csl-entry" role="listitem">
+Huete, A. R. 1988. <span>«A soil-adjusted vegetation index (SAVI)»</span>. <em>Remote Sensing of Environment</em> 25 (3): 295-309.
+</div>
+<div id="ref-olaya2014" class="csl-entry" role="listitem">
+Olaya, Víctor. 2014. <em>Sistemas de Información Geográfica</em>. Versión revisada.
+</div>
+<div id="ref-rouse1974" class="csl-entry" role="listitem">
+Rouse, J. W., R. H. Haas, J. A. Schell, y D. W. Deering. 1974. <span>«Monitoring vegetation systems in the Great Plains with ERTS»</span>. <em>NASA Special Publication</em> 351: 309.
+</div>
+<div id="ref-tuesta2020" class="csl-entry" role="listitem">
+Tuesta, F. M., y J. Ormeño. 2020. <em>Manual Básico: Sistema de Información Geográfica con QGIS</em>. Módulo digital de sesiones prácticas. Escuela Profesional de Agronomía, Facultad de Ciencias Agrarias, UNSM-T.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const cellDetails = window.document.querySelectorAll(".cell details.code-fold");
+        for (let i=0; i<cellDetails.length; i++) {
+          const details = cellDetails[i];
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell div.sourceCode.cell-code");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./manual1-muestreo-distribucion.html" class="pagination-link" aria-label="Muestreo y su distribución espacial">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Muestreo y su distribución espacial</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./references.html" class="pagination-link" aria-label="Referencias">
+        <span class="nav-page-text">Referencias</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Ejecutar el código</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Índices satelitales aplicados a la agricultura {#sec-practica2}</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>::: {.callout-note appearance="simple"}</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>**Curso:** Sistema de Información Geográfica (0101140064) · Escuela Profesional de Agronomía · UNSM-T</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>**Unidad III · Semanas 14–15** — Teledetección, descarga de imágenes satelitales y cálculo del NDVI.</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>**Software:** QGIS 4.0 "Norrköping" (Qt6). Válido también en QGIS 3.44 LTR.</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introducción</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>Los sensores satelitales miden la energía que la superficie refleja en distintas longitudes de onda (**bandas espectrales**). La vegetación sana refleja mucho en el **infrarrojo cercano (NIR)** y absorbe en el **rojo** (por la clorofila): esa diferencia es la base de los **índices de vegetación**, que resumen el vigor del cultivo en un solo número por píxel.</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>En esta práctica descargaremos una imagen satelital, calcularemos varios índices y evaluaremos el estado del cultivo por lote. En cada paso se incluye el **equivalente en R** con el paquete <span class="in">`terra`</span>, para migrar la práctica a código.</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="fu">### Objetivos</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Descargar imágenes Sentinel-2 / Landsat de portales gratuitos.</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Componer bandas (color natural y falso color) y recortar al área de estudio.</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Calcular NDVI y otros índices con la Calculadora ráster.</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Clasificar el vigor y obtener estadísticas por parcela.</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="fu">### Materiales y requisitos</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Recurso <span class="pp">|</span> Detalle <span class="pp">|</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Software <span class="pp">|</span> QGIS 4.0 (o 3.44 LTR) <span class="pp">|</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Imagen <span class="pp">|</span> Sentinel-2 (10 m) o Landsat 8/9 (30 m) <span class="pp">|</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Portales <span class="pp">|</span> Copernicus Browser, USGS EarthExplorer, LandViewer <span class="pp">|</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Límite de parcelas <span class="pp">|</span> Capa vectorial (<span class="in">`.gpkg`</span> / <span class="in">`.shp`</span>) <span class="pp">|</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Opcional (versión R) <span class="pp">|</span> R ≥ 4.3 con <span class="in">`terra`</span>, <span class="in">`sf`</span>, <span class="in">`tmap`</span>, <span class="in">`exactextractr`</span>, <span class="in">`tidyterra`</span> <span class="pp">|</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="fu">### Correspondencia de bandas {#sec-bandas}</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Uso <span class="pp">|</span> Sentinel-2 <span class="pp">|</span> Landsat 8/9 <span class="pp">|</span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Azul <span class="pp">|</span> B2 <span class="pp">|</span> B2 <span class="pp">|</span></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Verde <span class="pp">|</span> B3 <span class="pp">|</span> B3 <span class="pp">|</span></span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **Rojo** | **B4** | **B4** <span class="pp">|</span></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Borde rojo (Red-edge) <span class="pp">|</span> B5 <span class="pp">|</span> — <span class="pp">|</span></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **NIR** | **B8** | **B5** <span class="pp">|</span></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> SWIR-1 <span class="pp">|</span> B11 <span class="pp">|</span> B6 <span class="pp">|</span></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a><span class="fu">## Descarga de la imagen satelital {#sec-descarga}</span></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>Este paso se hace en el **navegador web** (fuera de QGIS). Usaremos el Copernicus Browser (Sentinel-2), pero EarthExplorer o LandViewer son equivalentes.</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Ingresa a Copernicus Browser y crea una cuenta gratuita.</span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Ubica tu zona de estudio en el mapa.</span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Filtra por **fecha** y por **cobertura de nubes** (busca &lt; 10 %).</span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Selecciona un producto **Sentinel-2 L2A** (reflectancia de superficie, ya corregida atmosféricamente).</span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Descarga las bandas necesarias (mínimo B4 y B8; añade B3, B5, B11 para más índices).</span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a><span class="al">![Selección de la escena Sentinel-2 en el portal de descarga. **📸 Capturar:** el navegador web con la escena seleccionada, el filtro de fecha y el porcentaje de nubes visible.](images/m2-01-descarga.png)</span>{#fig-m2-descarga width=95%}</span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>**L2A vs. L1C:** usa siempre **L2A** (reflectancia de superficie) para calcular índices; L1C es reflectancia en el tope de la atmósfera y requiere corrección previa.</span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a><span class="fu">## Carga de bandas y composiciones {#sec-carga}</span></span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Capa ▸ Añadir capa ▸ Añadir capa ráster** y carga cada banda (o el producto completo).</span>
+<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Color natural (RGB):** doble clic en la capa ▸ Simbología ▸ *Multibanda color* ▸ R=B4, G=B3, B=B2.</span>
+<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Falso color (vegetación en rojo):** R=B8, G=B4, B=B3. La vegetación vigorosa aparece en tonos rojos intensos.</span>
+<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a><span class="al">![Composición en falso color de la zona de estudio. **📸 Capturar:** el lienzo con la composición falso color (NIR-Rojo-Verde), donde la vegetación resalta en rojo.](images/m2-02-falsocolor.png)</span>{#fig-m2-falsocolor width=95%}</span>
+<span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip collapse="true"}</span>
+<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🔵 Equivalente en R</span></span>
+<span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-76"><a href="#cb8-76" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb8-77"><a href="#cb8-77" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: r-carga-m2</span></span>
+<span id="cb8-78"><a href="#cb8-78" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
+<span id="cb8-79"><a href="#cb8-79" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap)</span>
+<span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(exactextractr)</span>
+<span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a><span class="co"># Cargar bandas (ajusta rutas/nombres a tu descarga)</span></span>
+<span id="cb8-84"><a href="#cb8-84" aria-hidden="true" tabindex="-1"></a>b3 <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"data/S2_B03.tif"</span>)  <span class="co"># Verde</span></span>
+<span id="cb8-85"><a href="#cb8-85" aria-hidden="true" tabindex="-1"></a>b4 <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"data/S2_B04.tif"</span>)  <span class="co"># Rojo</span></span>
+<span id="cb8-86"><a href="#cb8-86" aria-hidden="true" tabindex="-1"></a>b5 <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"data/S2_B05.tif"</span>)  <span class="co"># Borde rojo</span></span>
+<span id="cb8-87"><a href="#cb8-87" aria-hidden="true" tabindex="-1"></a>b8 <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"data/S2_B08.tif"</span>)  <span class="co"># NIR</span></span>
+<span id="cb8-88"><a href="#cb8-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-89"><a href="#cb8-89" aria-hidden="true" tabindex="-1"></a><span class="co"># Composición falso color (NIR-Rojo-Verde)</span></span>
+<span id="cb8-90"><a href="#cb8-90" aria-hidden="true" tabindex="-1"></a>falso <span class="ot">&lt;-</span> <span class="fu">c</span>(b8, b4, b3)</span>
+<span id="cb8-91"><a href="#cb8-91" aria-hidden="true" tabindex="-1"></a><span class="fu">plotRGB</span>(falso, <span class="at">r =</span> <span class="dv">1</span>, <span class="at">g =</span> <span class="dv">2</span>, <span class="at">b =</span> <span class="dv">3</span>, <span class="at">stretch =</span> <span class="st">"lin"</span>)</span>
+<span id="cb8-92"><a href="#cb8-92" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-93"><a href="#cb8-93" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb8-94"><a href="#cb8-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-95"><a href="#cb8-95" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb8-96"><a href="#cb8-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-97"><a href="#cb8-97" aria-hidden="true" tabindex="-1"></a><span class="fu">## Recorte al área de estudio {#sec-recorte}</span></span>
+<span id="cb8-98"><a href="#cb8-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-99"><a href="#cb8-99" aria-hidden="true" tabindex="-1"></a>Trabajar sobre toda la escena es lento; recortamos a nuestras parcelas.</span>
+<span id="cb8-100"><a href="#cb8-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-101"><a href="#cb8-101" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Carga la capa de parcelas (asegura mismo SRC que el ráster).</span>
+<span id="cb8-102"><a href="#cb8-102" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Caja de herramientas ▸ **Extracción de ráster ▸ Cortar ráster por capa de máscara**.</span>
+<span id="cb8-103"><a href="#cb8-103" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Capa de entrada: la banda (o cada banda); capa de máscara: las parcelas. Ejecuta.</span>
+<span id="cb8-104"><a href="#cb8-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-105"><a href="#cb8-105" aria-hidden="true" tabindex="-1"></a><span class="al">![Bandas recortadas al límite de las parcelas. **📸 Capturar:** el diálogo "Cortar ráster por capa de máscara" y el resultado recortado sobre el área de trabajo.](images/m2-03-recorte.png)</span>{#fig-m2-recorte width=95%}</span>
+<span id="cb8-106"><a href="#cb8-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-107"><a href="#cb8-107" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip collapse="true"}</span>
+<span id="cb8-108"><a href="#cb8-108" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🔵 Equivalente en R</span></span>
+<span id="cb8-109"><a href="#cb8-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-112"><a href="#cb8-112" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb8-113"><a href="#cb8-113" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: r-recorte-m2</span></span>
+<span id="cb8-114"><a href="#cb8-114" aria-hidden="true" tabindex="-1"></a>parcelas <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/parcelas.gpkg"</span>) <span class="sc">|&gt;</span> <span class="fu">st_transform</span>(<span class="fu">crs</span>(b8))</span>
+<span id="cb8-115"><a href="#cb8-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-116"><a href="#cb8-116" aria-hidden="true" tabindex="-1"></a>recortar <span class="ot">&lt;-</span> <span class="cf">function</span>(r) <span class="fu">crop</span>(<span class="fu">mask</span>(r, <span class="fu">vect</span>(parcelas)), <span class="fu">vect</span>(parcelas))</span>
+<span id="cb8-117"><a href="#cb8-117" aria-hidden="true" tabindex="-1"></a>b3 <span class="ot">&lt;-</span> <span class="fu">recortar</span>(b3); b4 <span class="ot">&lt;-</span> <span class="fu">recortar</span>(b4); b5 <span class="ot">&lt;-</span> <span class="fu">recortar</span>(b5); b8 <span class="ot">&lt;-</span> <span class="fu">recortar</span>(b8)</span>
+<span id="cb8-118"><a href="#cb8-118" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-119"><a href="#cb8-119" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb8-120"><a href="#cb8-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-121"><a href="#cb8-121" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb8-122"><a href="#cb8-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-123"><a href="#cb8-123" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cálculo de índices con la Calculadora ráster {#sec-indices}</span></span>
+<span id="cb8-124"><a href="#cb8-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-125"><a href="#cb8-125" aria-hidden="true" tabindex="-1"></a>Abre **Ráster ▸ Calculadora ráster** (o desde la Caja de herramientas: *Análisis ráster ▸ Calculadora ráster*).</span>
+<span id="cb8-126"><a href="#cb8-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-127"><a href="#cb8-127" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb8-128"><a href="#cb8-128" aria-hidden="true" tabindex="-1"></a>Si tus bandas están en enteros escalados (DN), primero conviértelas a reflectancia (típicamente dividir entre 10000 en Sentinel-2 L2A). Trabaja con **decimales**.</span>
+<span id="cb8-129"><a href="#cb8-129" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb8-130"><a href="#cb8-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-131"><a href="#cb8-131" aria-hidden="true" tabindex="-1"></a><span class="fu">### NDVI — Índice de Vegetación de Diferencia Normalizada [@rouse1974]</span></span>
+<span id="cb8-132"><a href="#cb8-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-133"><a href="#cb8-133" aria-hidden="true" tabindex="-1"></a>$$NDVI = \frac{NIR - Rojo}{NIR + Rojo}$$</span>
+<span id="cb8-134"><a href="#cb8-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-135"><a href="#cb8-135" aria-hidden="true" tabindex="-1"></a>En la Calculadora ráster escribe (Sentinel-2):</span>
+<span id="cb8-136"><a href="#cb8-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-137"><a href="#cb8-137" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-138"><a href="#cb8-138" aria-hidden="true" tabindex="-1"></a><span class="in">("B8@1" - "B4@1") / ("B8@1" + "B4@1")</span></span>
+<span id="cb8-139"><a href="#cb8-139" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-140"><a href="#cb8-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-141"><a href="#cb8-141" aria-hidden="true" tabindex="-1"></a>Para **Landsat 8/9** usa <span class="in">`("B5@1" - "B4@1") / ("B5@1" + "B4@1")`</span>. El NDVI varía de −1 a 1: valores altos (0.6–0.9) indican vegetación densa y vigorosa; cercanos a 0, suelo desnudo; negativos, agua.</span>
+<span id="cb8-142"><a href="#cb8-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-143"><a href="#cb8-143" aria-hidden="true" tabindex="-1"></a><span class="al">![Cálculo del NDVI en la Calculadora ráster. **📸 Capturar:** el diálogo de la Calculadora con la expresión del NDVI escrita, y el ráster NDVI resultante.](images/m2-04-ndvi.png)</span>{#fig-m2-ndvi width=95%}</span>
+<span id="cb8-144"><a href="#cb8-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-145"><a href="#cb8-145" aria-hidden="true" tabindex="-1"></a><span class="fu">### Otros índices útiles</span></span>
+<span id="cb8-146"><a href="#cb8-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-147"><a href="#cb8-147" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Índice <span class="pp">|</span> Fórmula (Sentinel-2) <span class="pp">|</span> Uso <span class="pp">|</span></span>
+<span id="cb8-148"><a href="#cb8-148" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb8-149"><a href="#cb8-149" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **SAVI** <span class="co">[</span><span class="ot">@huete1988</span><span class="co">]</span> <span class="pp">|</span> <span class="in">`1.5*(B8-B4)/(B8+B4+0.5)`</span> <span class="pp">|</span> Corrige el efecto del suelo en cobertura baja <span class="pp">|</span></span>
+<span id="cb8-150"><a href="#cb8-150" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **GNDVI** <span class="pp">|</span> <span class="in">`(B8-B3)/(B8+B3)`</span> <span class="pp">|</span> Sensible al contenido de clorofila <span class="pp">|</span></span>
+<span id="cb8-151"><a href="#cb8-151" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **NDRE** <span class="pp">|</span> <span class="in">`(B8-B5)/(B8+B5)`</span> <span class="pp">|</span> Estrés en cultivos densos (usa borde rojo) <span class="pp">|</span></span>
+<span id="cb8-152"><a href="#cb8-152" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **NDWI** <span class="pp">|</span> <span class="in">`(B3-B8)/(B3+B8)`</span> <span class="pp">|</span> Contenido de agua / detección de cuerpos de agua <span class="pp">|</span></span>
+<span id="cb8-153"><a href="#cb8-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-154"><a href="#cb8-154" aria-hidden="true" tabindex="-1"></a><span class="al">![Comparación de índices (NDVI vs. otro índice). **📸 Capturar:** dos rásters de índices lado a lado con su rampa de color.](images/m2-05-indices.png)</span>{#fig-m2-indices width=95%}</span>
+<span id="cb8-155"><a href="#cb8-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-156"><a href="#cb8-156" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip collapse="true"}</span>
+<span id="cb8-157"><a href="#cb8-157" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🔵 Equivalente en R</span></span>
+<span id="cb8-158"><a href="#cb8-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-161"><a href="#cb8-161" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb8-162"><a href="#cb8-162" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: r-indices-m2</span></span>
+<span id="cb8-163"><a href="#cb8-163" aria-hidden="true" tabindex="-1"></a><span class="co"># (si vienen escalados, primero: b4 &lt;- b4/10000, etc.)</span></span>
+<span id="cb8-164"><a href="#cb8-164" aria-hidden="true" tabindex="-1"></a>ndvi  <span class="ot">&lt;-</span> (b8 <span class="sc">-</span> b4) <span class="sc">/</span> (b8 <span class="sc">+</span> b4)</span>
+<span id="cb8-165"><a href="#cb8-165" aria-hidden="true" tabindex="-1"></a>savi  <span class="ot">&lt;-</span> <span class="fl">1.5</span> <span class="sc">*</span> (b8 <span class="sc">-</span> b4) <span class="sc">/</span> (b8 <span class="sc">+</span> b4 <span class="sc">+</span> <span class="fl">0.5</span>)</span>
+<span id="cb8-166"><a href="#cb8-166" aria-hidden="true" tabindex="-1"></a>gndvi <span class="ot">&lt;-</span> (b8 <span class="sc">-</span> b3) <span class="sc">/</span> (b8 <span class="sc">+</span> b3)</span>
+<span id="cb8-167"><a href="#cb8-167" aria-hidden="true" tabindex="-1"></a>ndre  <span class="ot">&lt;-</span> (b8 <span class="sc">-</span> b5) <span class="sc">/</span> (b8 <span class="sc">+</span> b5)</span>
+<span id="cb8-168"><a href="#cb8-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-169"><a href="#cb8-169" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ndvi, <span class="at">main =</span> <span class="st">"NDVI"</span>)</span>
+<span id="cb8-170"><a href="#cb8-170" aria-hidden="true" tabindex="-1"></a><span class="fu">global</span>(ndvi, <span class="at">fun =</span> <span class="st">"mean"</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)   <span class="co"># NDVI medio de la escena</span></span>
+<span id="cb8-171"><a href="#cb8-171" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-172"><a href="#cb8-172" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb8-173"><a href="#cb8-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-174"><a href="#cb8-174" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb8-175"><a href="#cb8-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-176"><a href="#cb8-176" aria-hidden="true" tabindex="-1"></a><span class="fu">## Simbología y clases de vigor {#sec-simbologia}</span></span>
+<span id="cb8-177"><a href="#cb8-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-178"><a href="#cb8-178" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Doble clic en el ráster NDVI ▸ **Simbología**.</span>
+<span id="cb8-179"><a href="#cb8-179" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Tipo de renderizado: **Pseudocolor de banda simple**.</span>
+<span id="cb8-180"><a href="#cb8-180" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Rampa de color **RdYlGn** (rojo = bajo vigor, verde = alto vigor).</span>
+<span id="cb8-181"><a href="#cb8-181" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Modo *Clasificar* con cortes interpretables, p. ej.:</span>
+<span id="cb8-182"><a href="#cb8-182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-183"><a href="#cb8-183" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Clase <span class="pp">|</span> Rango NDVI <span class="pp">|</span> Interpretación <span class="pp">|</span></span>
+<span id="cb8-184"><a href="#cb8-184" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb8-185"><a href="#cb8-185" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Muy bajo <span class="pp">|</span> &lt; 0.2 <span class="pp">|</span> Suelo desnudo / sin cultivo <span class="pp">|</span></span>
+<span id="cb8-186"><a href="#cb8-186" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Bajo <span class="pp">|</span> 0.2 – 0.4 <span class="pp">|</span> Vegetación escasa / estrés <span class="pp">|</span></span>
+<span id="cb8-187"><a href="#cb8-187" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Medio <span class="pp">|</span> 0.4 – 0.6 <span class="pp">|</span> Vigor moderado <span class="pp">|</span></span>
+<span id="cb8-188"><a href="#cb8-188" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Alto <span class="pp">|</span> 0.6 – 0.8 <span class="pp">|</span> Vigor bueno <span class="pp">|</span></span>
+<span id="cb8-189"><a href="#cb8-189" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Muy alto <span class="pp">|</span> &gt; 0.8 <span class="pp">|</span> Cobertura densa <span class="pp">|</span></span>
+<span id="cb8-190"><a href="#cb8-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-191"><a href="#cb8-191" aria-hidden="true" tabindex="-1"></a><span class="al">![NDVI clasificado en niveles de vigor. **📸 Capturar:** el panel de Simbología en modo Pseudocolor con los cortes definidos, y el mapa NDVI clasificado.](images/m2-06-clases.png)</span>{#fig-m2-clases width=95%}</span>
+<span id="cb8-192"><a href="#cb8-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-193"><a href="#cb8-193" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip collapse="true"}</span>
+<span id="cb8-194"><a href="#cb8-194" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🔵 Equivalente en R</span></span>
+<span id="cb8-195"><a href="#cb8-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-198"><a href="#cb8-198" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb8-199"><a href="#cb8-199" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: r-clases-m2</span></span>
+<span id="cb8-200"><a href="#cb8-200" aria-hidden="true" tabindex="-1"></a>rcl <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="fl">0.2</span>, <span class="dv">1</span>,</span>
+<span id="cb8-201"><a href="#cb8-201" aria-hidden="true" tabindex="-1"></a>                <span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="dv">2</span>,</span>
+<span id="cb8-202"><a href="#cb8-202" aria-hidden="true" tabindex="-1"></a>                <span class="fl">0.4</span>, <span class="fl">0.6</span>, <span class="dv">3</span>,</span>
+<span id="cb8-203"><a href="#cb8-203" aria-hidden="true" tabindex="-1"></a>                <span class="fl">0.6</span>, <span class="fl">0.8</span>, <span class="dv">4</span>,</span>
+<span id="cb8-204"><a href="#cb8-204" aria-hidden="true" tabindex="-1"></a>                <span class="fl">0.8</span>,   <span class="dv">1</span>, <span class="dv">5</span>), <span class="at">ncol =</span> <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb8-205"><a href="#cb8-205" aria-hidden="true" tabindex="-1"></a>ndvi_clases <span class="ot">&lt;-</span> <span class="fu">classify</span>(ndvi, rcl)</span>
+<span id="cb8-206"><a href="#cb8-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-207"><a href="#cb8-207" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(ndvi) <span class="sc">+</span> <span class="fu">tm_raster</span>(<span class="at">palette =</span> <span class="st">"RdYlGn"</span>, <span class="at">title =</span> <span class="st">"NDVI"</span>) <span class="sc">+</span></span>
+<span id="cb8-208"><a href="#cb8-208" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span>, <span class="at">frame =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb8-209"><a href="#cb8-209" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-210"><a href="#cb8-210" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb8-211"><a href="#cb8-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-212"><a href="#cb8-212" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb8-213"><a href="#cb8-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-214"><a href="#cb8-214" aria-hidden="true" tabindex="-1"></a><span class="fu">## Estadísticas por parcela {#sec-zonal}</span></span>
+<span id="cb8-215"><a href="#cb8-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-216"><a href="#cb8-216" aria-hidden="true" tabindex="-1"></a>Para llevar el NDVI a una tabla de decisión (media por lote).</span>
+<span id="cb8-217"><a href="#cb8-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-218"><a href="#cb8-218" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Caja de herramientas ▸ **Análisis ráster ▸ Estadísticas zonales**.</span>
+<span id="cb8-219"><a href="#cb8-219" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Capa de polígonos: parcelas; capa ráster: NDVI; estadísticas: media, mínimo, máximo, desviación.</span>
+<span id="cb8-220"><a href="#cb8-220" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Ejecuta: se añaden columnas a la tabla de atributos de las parcelas.</span>
+<span id="cb8-221"><a href="#cb8-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-222"><a href="#cb8-222" aria-hidden="true" tabindex="-1"></a><span class="al">![Estadísticas zonales de NDVI por parcela. **📸 Capturar:** la tabla de atributos de las parcelas con la columna de NDVI medio, y el mapa coloreado por ese valor.](images/m2-07-zonal.png)</span>{#fig-m2-zonal width=95%}</span>
+<span id="cb8-223"><a href="#cb8-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-224"><a href="#cb8-224" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip collapse="true"}</span>
+<span id="cb8-225"><a href="#cb8-225" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🔵 Equivalente en R</span></span>
+<span id="cb8-226"><a href="#cb8-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-229"><a href="#cb8-229" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb8-230"><a href="#cb8-230" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: r-zonal-m2</span></span>
+<span id="cb8-231"><a href="#cb8-231" aria-hidden="true" tabindex="-1"></a>parcelas<span class="sc">$</span>ndvi_medio <span class="ot">&lt;-</span> <span class="fu">exact_extract</span>(ndvi, parcelas, <span class="st">"mean"</span>)</span>
+<span id="cb8-232"><a href="#cb8-232" aria-hidden="true" tabindex="-1"></a>parcelas<span class="sc">$</span>ndvi_min   <span class="ot">&lt;-</span> <span class="fu">exact_extract</span>(ndvi, parcelas, <span class="st">"min"</span>)</span>
+<span id="cb8-233"><a href="#cb8-233" aria-hidden="true" tabindex="-1"></a>parcelas<span class="sc">$</span>ndvi_max   <span class="ot">&lt;-</span> <span class="fu">exact_extract</span>(ndvi, parcelas, <span class="st">"max"</span>)</span>
+<span id="cb8-234"><a href="#cb8-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-235"><a href="#cb8-235" aria-hidden="true" tabindex="-1"></a>parcelas[<span class="fu">order</span>(parcelas<span class="sc">$</span>ndvi_medio), <span class="fu">c</span>(<span class="st">"id"</span>, <span class="st">"ndvi_medio"</span>)]</span>
+<span id="cb8-236"><a href="#cb8-236" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-237"><a href="#cb8-237" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb8-238"><a href="#cb8-238" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-239"><a href="#cb8-239" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb8-240"><a href="#cb8-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-241"><a href="#cb8-241" aria-hidden="true" tabindex="-1"></a><span class="fu">## Composición del mapa final {#sec-layout2}</span></span>
+<span id="cb8-242"><a href="#cb8-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-243"><a href="#cb8-243" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Proyecto ▸ Nueva composición de impresión**.</span>
+<span id="cb8-244"><a href="#cb8-244" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Inserta el mapa NDVI (o una lámina comparando índices) con **título, leyenda, escala, norte, grilla y membrete** (logo UNSM, autor, fecha, satélite y fecha de la imagen).</span>
+<span id="cb8-245"><a href="#cb8-245" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Exportar como PDF / imagen**.</span>
+<span id="cb8-246"><a href="#cb8-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-247"><a href="#cb8-247" aria-hidden="true" tabindex="-1"></a><span class="al">![Composición final con el mapa de NDVI. **📸 Capturar:** el diseñador de impresión con el mapa de índice, leyenda de vigor, escala, norte, grilla y membrete.](images/m2-08-layout.png)</span>{#fig-m2-layout width=95%}</span>
+<span id="cb8-248"><a href="#cb8-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-249"><a href="#cb8-249" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip collapse="true"}</span>
+<span id="cb8-250"><a href="#cb8-250" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🔵 Equivalente en R</span></span>
+<span id="cb8-251"><a href="#cb8-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-254"><a href="#cb8-254" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb8-255"><a href="#cb8-255" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: r-layout-m2</span></span>
+<span id="cb8-256"><a href="#cb8-256" aria-hidden="true" tabindex="-1"></a>mapa_ndvi <span class="ot">&lt;-</span></span>
+<span id="cb8-257"><a href="#cb8-257" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(ndvi) <span class="sc">+</span> <span class="fu">tm_raster</span>(<span class="at">palette =</span> <span class="st">"RdYlGn"</span>, <span class="at">title =</span> <span class="st">"NDVI"</span>, <span class="at">style =</span> <span class="st">"cont"</span>) <span class="sc">+</span></span>
+<span id="cb8-258"><a href="#cb8-258" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(parcelas) <span class="sc">+</span> <span class="fu">tm_borders</span>(<span class="at">col =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb8-259"><a href="#cb8-259" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_compass</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"top"</span>)) <span class="sc">+</span></span>
+<span id="cb8-260"><a href="#cb8-260" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_scale_bar</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"bottom"</span>)) <span class="sc">+</span></span>
+<span id="cb8-261"><a href="#cb8-261" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">"NDVI por parcela"</span>, <span class="at">legend.outside =</span> <span class="cn">TRUE</span>, <span class="at">frame =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb8-262"><a href="#cb8-262" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-263"><a href="#cb8-263" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_save</span>(mapa_ndvi, <span class="st">"images/mapa_ndvi_R.png"</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
+<span id="cb8-264"><a href="#cb8-264" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-265"><a href="#cb8-265" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb8-266"><a href="#cb8-266" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-267"><a href="#cb8-267" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb8-268"><a href="#cb8-268" aria-hidden="true" tabindex="-1"></a><span class="fu">## Descarga por código (opcional, para tu versión 100 % R)</span></span>
+<span id="cb8-269"><a href="#cb8-269" aria-hidden="true" tabindex="-1"></a>Para automatizar la descarga sin el portal web puedes usar <span class="in">`rstac`</span> (Planetary Computer / AWS) o el paquete <span class="in">`rsi`</span>, que trae <span class="in">`get_sentinel2_imagery()`</span> y helpers para calcular índices directamente sobre el cubo descargado.</span>
+<span id="cb8-270"><a href="#cb8-270" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb8-271"><a href="#cb8-271" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-272"><a href="#cb8-272" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb8-273"><a href="#cb8-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-274"><a href="#cb8-274" aria-hidden="true" tabindex="-1"></a><span class="fu">## Producto de la práctica</span></span>
+<span id="cb8-275"><a href="#cb8-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-276"><a href="#cb8-276" aria-hidden="true" tabindex="-1"></a>Entrega un mapa temático (PDF/JPEG) con:</span>
+<span id="cb8-277"><a href="#cb8-277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-278"><a href="#cb8-278" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>El NDVI clasificado en niveles de vigor sobre tus parcelas.</span>
+<span id="cb8-279"><a href="#cb8-279" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>La tabla de NDVI medio por parcela (estadísticas zonales).</span>
+<span id="cb8-280"><a href="#cb8-280" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Todos los elementos cartográficos, indicando **satélite, fecha de la imagen y % de nubes**.</span>
+<span id="cb8-281"><a href="#cb8-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-282"><a href="#cb8-282" aria-hidden="true" tabindex="-1"></a>Y una breve interpretación (½ página): ¿qué parcelas muestran menor vigor y qué manejo agronómico sugerirías?</span>
+<span id="cb8-283"><a href="#cb8-283" aria-hidden="true" tabindex="-1"></a></span>
+</code></pre></div><button title="Copiar al portapapeles" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+</body></html>
