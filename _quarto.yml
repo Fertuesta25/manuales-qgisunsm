@@ -32,9 +32,6 @@ format:
     code-copy: true
     fig-cap-location: bottom
     fig-align: center
-  typst:
-    papersize: a4
-    toc: true
 
 execute:
   eval: false      # Cambiar a true cuando trabajes con tus datos reales
