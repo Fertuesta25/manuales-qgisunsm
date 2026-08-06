@@ -1,0 +1,43 @@
+project:
+  type: book
+  output-dir: _output
+
+lang: es
+bibliography: references.bib
+nocite: |
+  @olaya2014, @tuesta2020, @baddeley2005
+
+book:
+  title: "Manual de Prácticas de SIG"
+  subtitle: "Muestreo espacial e índices satelitales con QGIS 4.2 y R"
+  author:
+    - name: "Fernando Michel Tuesta Chichipe"
+    - name: "Javier Ormeño Luna"
+  date: today
+  search: true
+  chapters:
+    - index.qmd
+    - manual1-muestreo-distribucion.qmd
+    - manual2-indices-satelitales.qmd
+    - references.qmd
+
+format:
+  html:
+    theme: [cosmo, custom.scss]
+    lightbox: true          # clic sobre la captura para verla a pantalla completa
+    toc: true
+    toc-depth: 3
+    code-fold: show
+    code-tools: true
+    code-copy: true
+    fig-cap-location: bottom
+    fig-align: center
+  typst:
+    papersize: a4
+    toc: true
+
+execute:
+  eval: false      # Cambiar a true cuando trabajes con tus datos reales
+  echo: true
+  warning: false
+  message: false

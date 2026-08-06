@@ -1,0 +1,272 @@
+# Índices satelitales aplicados a la agricultura {#sec-practica2}
+
+::: {.callout-note appearance="simple"}
+**Curso:** Sistema de Información Geográfica (0101140064) · Escuela Profesional de Agronomía · UNSM-T
+**Unidad III · Semanas 14–15** — Teledetección, descarga de imágenes satelitales y cálculo del NDVI.
+**Software:** QGIS 4.0 "Norrköping" (Qt6). Válido también en QGIS 3.44 LTR.
+:::
+
+## Introducción
+
+Los sensores satelitales miden la energía que la superficie refleja en distintas longitudes de onda (**bandas espectrales**). La vegetación sana refleja mucho en el **infrarrojo cercano (NIR)** y absorbe en el **rojo** (por la clorofila): esa diferencia es la base de los **índices de vegetación**, que resumen el vigor del cultivo en un solo número por píxel.
+
+En esta práctica descargaremos una imagen satelital, calcularemos varios índices y evaluaremos el estado del cultivo por lote. En cada paso se incluye el **equivalente en R** con el paquete `terra`, para migrar la práctica a código.
+
+### Objetivos
+
+- Descargar imágenes Sentinel-2 / Landsat de portales gratuitos.
+- Componer bandas (color natural y falso color) y recortar al área de estudio.
+- Calcular NDVI y otros índices con la Calculadora ráster.
+- Clasificar el vigor y obtener estadísticas por parcela.
+
+### Materiales y requisitos
+
+| Recurso | Detalle |
+|---|---|
+| Software | QGIS 4.0 (o 3.44 LTR) |
+| Imagen | Sentinel-2 (10 m) o Landsat 8/9 (30 m) |
+| Portales | Copernicus Browser, USGS EarthExplorer, LandViewer |
+| Límite de parcelas | Capa vectorial (`.gpkg` / `.shp`) |
+| Opcional (versión R) | R ≥ 4.3 con `terra`, `sf`, `tmap`, `exactextractr`, `tidyterra` |
+
+### Correspondencia de bandas {#sec-bandas}
+
+| Uso | Sentinel-2 | Landsat 8/9 |
+|---|---|---|
+| Azul | B2 | B2 |
+| Verde | B3 | B3 |
+| **Rojo** | **B4** | **B4** |
+| Borde rojo (Red-edge) | B5 | — |
+| **NIR** | **B8** | **B5** |
+| SWIR-1 | B11 | B6 |
+
+---
+
+## Descarga de la imagen satelital {#sec-descarga}
+
+Este paso se hace en el **navegador web** (fuera de QGIS). Usaremos el Copernicus Browser (Sentinel-2), pero EarthExplorer o LandViewer son equivalentes.
+
+1. Ingresa a Copernicus Browser y crea una cuenta gratuita.
+2. Ubica tu zona de estudio en el mapa.
+3. Filtra por **fecha** y por **cobertura de nubes** (busca < 10 %).
+4. Selecciona un producto **Sentinel-2 L2A** (reflectancia de superficie, ya corregida atmosféricamente).
+5. Descarga las bandas necesarias (mínimo B4 y B8; añade B3, B5, B11 para más índices).
+
+![Selección de la escena Sentinel-2 en el portal de descarga. **📸 Capturar:** el navegador web con la escena seleccionada, el filtro de fecha y el porcentaje de nubes visible.](images/m2-01-descarga.png){#fig-m2-descarga width=95%}
+
+::: {.callout-note}
+**L2A vs. L1C:** usa siempre **L2A** (reflectancia de superficie) para calcular índices; L1C es reflectancia en el tope de la atmósfera y requiere corrección previa.
+:::
+
+---
+
+## Carga de bandas y composiciones {#sec-carga}
+
+1. **Capa ▸ Añadir capa ▸ Añadir capa ráster** y carga cada banda (o el producto completo).
+2. **Color natural (RGB):** doble clic en la capa ▸ Simbología ▸ *Multibanda color* ▸ R=B4, G=B3, B=B2.
+3. **Falso color (vegetación en rojo):** R=B8, G=B4, B=B3. La vegetación vigorosa aparece en tonos rojos intensos.
+
+![Composición en falso color de la zona de estudio. **📸 Capturar:** el lienzo con la composición falso color (NIR-Rojo-Verde), donde la vegetación resalta en rojo.](images/m2-02-falsocolor.png){#fig-m2-falsocolor width=95%}
+
+::: {.callout-tip collapse="true"}
+## 🔵 Equivalente en R
+
+```{r}
+#| label: r-carga-m2
+library(terra)
+library(sf)
+library(tmap)
+library(exactextractr)
+
+# Cargar bandas (ajusta rutas/nombres a tu descarga)
+b3 <- rast("data/S2_B03.tif")  # Verde
+b4 <- rast("data/S2_B04.tif")  # Rojo
+b5 <- rast("data/S2_B05.tif")  # Borde rojo
+b8 <- rast("data/S2_B08.tif")  # NIR
+
+# Composición falso color (NIR-Rojo-Verde)
+falso <- c(b8, b4, b3)
+plotRGB(falso, r = 1, g = 2, b = 3, stretch = "lin")
+```
+:::
+
+---
+
+## Recorte al área de estudio {#sec-recorte}
+
+Trabajar sobre toda la escena es lento; recortamos a nuestras parcelas.
+
+1. Carga la capa de parcelas (asegura mismo SRC que el ráster).
+2. Caja de herramientas ▸ **Extracción de ráster ▸ Cortar ráster por capa de máscara**.
+3. Capa de entrada: la banda (o cada banda); capa de máscara: las parcelas. Ejecuta.
+
+![Bandas recortadas al límite de las parcelas. **📸 Capturar:** el diálogo "Cortar ráster por capa de máscara" y el resultado recortado sobre el área de trabajo.](images/m2-03-recorte.png){#fig-m2-recorte width=95%}
+
+::: {.callout-tip collapse="true"}
+## 🔵 Equivalente en R
+
+```{r}
+#| label: r-recorte-m2
+parcelas <- st_read("data/parcelas.gpkg") |> st_transform(crs(b8))
+
+recortar <- function(r) crop(mask(r, vect(parcelas)), vect(parcelas))
+b3 <- recortar(b3); b4 <- recortar(b4); b5 <- recortar(b5); b8 <- recortar(b8)
+```
+:::
+
+---
+
+## Cálculo de índices con la Calculadora ráster {#sec-indices}
+
+Abre **Ráster ▸ Calculadora ráster** (o desde la Caja de herramientas: *Análisis ráster ▸ Calculadora ráster*).
+
+::: {.callout-important}
+Si tus bandas están en enteros escalados (DN), primero conviértelas a reflectancia (típicamente dividir entre 10000 en Sentinel-2 L2A). Trabaja con **decimales**.
+:::
+
+### NDVI — Índice de Vegetación de Diferencia Normalizada [@rouse1974]
+
+$$NDVI = \frac{NIR - Rojo}{NIR + Rojo}$$
+
+En la Calculadora ráster escribe (Sentinel-2):
+
+```
+("B8@1" - "B4@1") / ("B8@1" + "B4@1")
+```
+
+Para **Landsat 8/9** usa `("B5@1" - "B4@1") / ("B5@1" + "B4@1")`. El NDVI varía de −1 a 1: valores altos (0.6–0.9) indican vegetación densa y vigorosa; cercanos a 0, suelo desnudo; negativos, agua.
+
+![Cálculo del NDVI en la Calculadora ráster. **📸 Capturar:** el diálogo de la Calculadora con la expresión del NDVI escrita, y el ráster NDVI resultante.](images/m2-04-ndvi.png){#fig-m2-ndvi width=95%}
+
+### Otros índices útiles
+
+| Índice | Fórmula (Sentinel-2) | Uso |
+|---|---|---|
+| **SAVI** [@huete1988] | `1.5*(B8-B4)/(B8+B4+0.5)` | Corrige el efecto del suelo en cobertura baja |
+| **GNDVI** | `(B8-B3)/(B8+B3)` | Sensible al contenido de clorofila |
+| **NDRE** | `(B8-B5)/(B8+B5)` | Estrés en cultivos densos (usa borde rojo) |
+| **NDWI** | `(B3-B8)/(B3+B8)` | Contenido de agua / detección de cuerpos de agua |
+
+![Comparación de índices (NDVI vs. otro índice). **📸 Capturar:** dos rásters de índices lado a lado con su rampa de color.](images/m2-05-indices.png){#fig-m2-indices width=95%}
+
+::: {.callout-tip collapse="true"}
+## 🔵 Equivalente en R
+
+```{r}
+#| label: r-indices-m2
+# (si vienen escalados, primero: b4 <- b4/10000, etc.)
+ndvi  <- (b8 - b4) / (b8 + b4)
+savi  <- 1.5 * (b8 - b4) / (b8 + b4 + 0.5)
+gndvi <- (b8 - b3) / (b8 + b3)
+ndre  <- (b8 - b5) / (b8 + b5)
+
+plot(ndvi, main = "NDVI")
+global(ndvi, fun = "mean", na.rm = TRUE)   # NDVI medio de la escena
+```
+:::
+
+---
+
+## Simbología y clases de vigor {#sec-simbologia}
+
+1. Doble clic en el ráster NDVI ▸ **Simbología**.
+2. Tipo de renderizado: **Pseudocolor de banda simple**.
+3. Rampa de color **RdYlGn** (rojo = bajo vigor, verde = alto vigor).
+4. Modo *Clasificar* con cortes interpretables, p. ej.:
+
+| Clase | Rango NDVI | Interpretación |
+|---|---|---|
+| Muy bajo | < 0.2 | Suelo desnudo / sin cultivo |
+| Bajo | 0.2 – 0.4 | Vegetación escasa / estrés |
+| Medio | 0.4 – 0.6 | Vigor moderado |
+| Alto | 0.6 – 0.8 | Vigor bueno |
+| Muy alto | > 0.8 | Cobertura densa |
+
+![NDVI clasificado en niveles de vigor. **📸 Capturar:** el panel de Simbología en modo Pseudocolor con los cortes definidos, y el mapa NDVI clasificado.](images/m2-06-clases.png){#fig-m2-clases width=95%}
+
+::: {.callout-tip collapse="true"}
+## 🔵 Equivalente en R
+
+```{r}
+#| label: r-clases-m2
+rcl <- matrix(c(-1, 0.2, 1,
+                0.2, 0.4, 2,
+                0.4, 0.6, 3,
+                0.6, 0.8, 4,
+                0.8,   1, 5), ncol = 3, byrow = TRUE)
+ndvi_clases <- classify(ndvi, rcl)
+
+tm_shape(ndvi) + tm_raster(palette = "RdYlGn", title = "NDVI") +
+  tm_layout(legend.outside = TRUE, frame = FALSE)
+```
+:::
+
+---
+
+## Estadísticas por parcela {#sec-zonal}
+
+Para llevar el NDVI a una tabla de decisión (media por lote).
+
+1. Caja de herramientas ▸ **Análisis ráster ▸ Estadísticas zonales**.
+2. Capa de polígonos: parcelas; capa ráster: NDVI; estadísticas: media, mínimo, máximo, desviación.
+3. Ejecuta: se añaden columnas a la tabla de atributos de las parcelas.
+
+![Estadísticas zonales de NDVI por parcela. **📸 Capturar:** la tabla de atributos de las parcelas con la columna de NDVI medio, y el mapa coloreado por ese valor.](images/m2-07-zonal.png){#fig-m2-zonal width=95%}
+
+::: {.callout-tip collapse="true"}
+## 🔵 Equivalente en R
+
+```{r}
+#| label: r-zonal-m2
+parcelas$ndvi_medio <- exact_extract(ndvi, parcelas, "mean")
+parcelas$ndvi_min   <- exact_extract(ndvi, parcelas, "min")
+parcelas$ndvi_max   <- exact_extract(ndvi, parcelas, "max")
+
+parcelas[order(parcelas$ndvi_medio), c("id", "ndvi_medio")]
+```
+:::
+
+---
+
+## Composición del mapa final {#sec-layout2}
+
+1. **Proyecto ▸ Nueva composición de impresión**.
+2. Inserta el mapa NDVI (o una lámina comparando índices) con **título, leyenda, escala, norte, grilla y membrete** (logo UNSM, autor, fecha, satélite y fecha de la imagen).
+3. **Exportar como PDF / imagen**.
+
+![Composición final con el mapa de NDVI. **📸 Capturar:** el diseñador de impresión con el mapa de índice, leyenda de vigor, escala, norte, grilla y membrete.](images/m2-08-layout.png){#fig-m2-layout width=95%}
+
+::: {.callout-tip collapse="true"}
+## 🔵 Equivalente en R
+
+```{r}
+#| label: r-layout-m2
+mapa_ndvi <-
+  tm_shape(ndvi) + tm_raster(palette = "RdYlGn", title = "NDVI", style = "cont") +
+  tm_shape(parcelas) + tm_borders(col = "black") +
+  tm_compass(position = c("right", "top")) +
+  tm_scale_bar(position = c("left", "bottom")) +
+  tm_layout(title = "NDVI por parcela", legend.outside = TRUE, frame = FALSE)
+
+tmap_save(mapa_ndvi, "images/mapa_ndvi_R.png", dpi = 300)
+```
+:::
+
+::: {.callout-note}
+## Descarga por código (opcional, para tu versión 100 % R)
+Para automatizar la descarga sin el portal web puedes usar `rstac` (Planetary Computer / AWS) o el paquete `rsi`, que trae `get_sentinel2_imagery()` y helpers para calcular índices directamente sobre el cubo descargado.
+:::
+
+---
+
+## Producto de la práctica
+
+Entrega un mapa temático (PDF/JPEG) con:
+
+- El NDVI clasificado en niveles de vigor sobre tus parcelas.
+- La tabla de NDVI medio por parcela (estadísticas zonales).
+- Todos los elementos cartográficos, indicando **satélite, fecha de la imagen y % de nubes**.
+
+Y una breve interpretación (½ página): ¿qué parcelas muestran menor vigor y qué manejo agronómico sugerirías?
+
+

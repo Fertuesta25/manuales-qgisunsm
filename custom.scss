@@ -1,0 +1,36 @@
+/*-- scss:defaults --*/
+
+// Ancho de la columna de texto del libro (por defecto 800px).
+// Súbelo o bájalo según qué tan amplias quieras las capturas.
+$grid-body-width: 800px;
+
+// Ancho de la barra lateral de navegación y del margen derecho.
+$grid-sidebar-width: 270px;
+$grid-margin-width:  200px;
+
+
+/*-- scss:rules --*/
+
+// Las capturas ocupan todo el ancho disponible de su columna
+.quarto-figure img,
+figure > img {
+  width: 100%;
+  height: auto;
+}
+
+// Borde sutil para que las capturas de QGIS se distingan del fondo blanco
+.quarto-figure img {
+  border: 1px solid #d0d7de;
+  border-radius: 4px;
+}
+
+// Indicar que la imagen es ampliable al pasar el cursor
+.quarto-figure img:hover {
+  cursor: zoom-in;
+}
+
+// Leyendas de figura algo más discretas
+figcaption {
+  font-size: 0.9rem;
+  color: #57606a;
+}
