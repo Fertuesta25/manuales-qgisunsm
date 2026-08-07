@@ -17,18 +17,23 @@ area <- st_transform(area, 32718)
 tm_shape(area) + tm_borders(lwd = 2) + tm_layout(frame = F)
 
 
-set.seed(2026)   # reproducibilidad
+set.seed(2026)
+library(spatstat.random)
 
-# --- Muestreo sistemático (malla regular ~25 m) ---
-n_puntos <- as.numeric(st_area(area) / set_units(3000^2, m^2))
-malla <- st_sample(area, size = round(n_puntos), type = "regular") |> st_sf()
-
-# --- Muestreo aleatorio (40 puntos) ---
-aleatorio <- st_sample(area, size = 40, type = "random") |> st_sf()
-
-tm_shape(area) + tm_borders() +
-  tm_shape(aleatorio) + tm_dots(size = 0.2) + tm_borders(lwd = 2) + tm_layout(frame = F)
+# --- Muestreo sistemático (malla regular de 3000 m) ---
+malla <- st_make_grid(area, cellsize = 3000, what = "centers") |>
+  st_as_sf() |>
+  st_filter(area)
 
 tm_shape(area) + tm_borders() +
-  tm_shape(malla) + tm_dots(size = 0.2) + tm_borders(lwd = 2) + tm_layout(frame = F)
+  tm_shape(malla) + tm_dots(size = 0.2) + tm_layout(frame = F)
+
+# --- Muestreo aleatorio con distancia mínima (2500 m) ---
+win <- as.owin(st_geometry(area))
+ssi <- rSSI(r = 2500, n = 40, win = win)
+aleatorio <- st_as_sf(data.frame(x = ssi$x, y = ssi$y),
+                      coords = c("x", "y"), crs = st_crs(area))
+
+tm_shape(area) + tm_borders() +
+  tm_shape(aleatorio) + tm_dots(size = 0.2) + tm_layout(frame = F)
 
