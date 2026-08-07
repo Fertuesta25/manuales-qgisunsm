@@ -306,6 +306,7 @@ mf_scale(pos = "bottomright")
 mf_arrow(pos = "topleft")
 mf_title("Interpolación IDW de MO del suelo (%)")
 mf_credits("Datos simulados · WGS 84 / UTM 18S")
+
 ```
 :::
 
