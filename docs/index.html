@@ -234,7 +234,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Fecha de publicación</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">6 de agosto de 2026</p>
+      <p class="date">7 de agosto de 2026</p>
     </div>
   </div>
   
@@ -278,11 +278,11 @@ div.csl-indent {
 <p>Los pasos se documentan sobre <strong>QGIS 4.2 “Belém do Pará”</strong> (Qt6, marzo 2026) y son igualmente válidos en <strong>QGIS 3.44 LTR</strong>, ya que los cambios de interfaz para el usuario son mínimos. Si utilizas la LTR, ten presente que algunos plugins Qt5 aún no son compatibles con Qt6.</p>
 <p>Para la versión en R se requiere R ≥ 4.3 con los paquetes:</p>
 <ul>
-<li><strong>Práctica 1:</strong> <code>sf</code>, <code>terra</code>, <code>spatstat</code>, <code>gstat</code>, <code>tmap</code>, <code>dplyr</code>, <code>units</code>.</li>
-<li><strong>Práctica 2:</strong> <code>terra</code>, <code>sf</code>, <code>tmap</code>, <code>exactextractr</code>, <code>tidyterra</code> (y, opcional, <code>rstac</code> / <code>rsi</code> para descarga automatizada de imágenes).</li>
+<li><strong>Práctica 1:</strong> <code>sf</code>, <code>terra</code>, <code>spatstat</code>, <code>gstat</code>, <code>dplyr</code>, <code>mapsf</code>.</li>
+<li><strong>Práctica 2:</strong> <code>terra</code>, <code>sf</code>, <code>mapsf</code>, <code>exactextractr</code>, <code>tidyterra</code> (y, opcional, <code>rstac</code> / <code>rsi</code> para descarga automatizada de imágenes).</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"sf"</span>,<span class="st">"terra"</span>,<span class="st">"spatstat"</span>,<span class="st">"gstat"</span>,<span class="st">"tmap"</span>,<span class="st">"dplyr"</span>,<span class="st">"units"</span>,</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"exactextractr"</span>,<span class="st">"tidyterra"</span>))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"sf"</span>,<span class="st">"terra"</span>,<span class="st">"spatstat"</span>,<span class="st">"gstat"</span>,<span class="st">"dplyr"</span>, <span class="st">"mapsf"</span>,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                <span class="st">"exactextractr"</span>,<span class="st">"tidyterra"</span>))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 <!-- -->
@@ -797,13 +797,13 @@ Tuesta, F. M., y J. Ormeño. 2020. <em>Manual Básico: Sistema de Información G
 <span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>Para la versión en R se requiere R ≥ 4.3 con los paquetes:</span>
 <span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Práctica 1:** <span class="in">`sf`</span>, <span class="in">`terra`</span>, <span class="in">`spatstat`</span>, <span class="in">`gstat`</span>, <span class="in">`tmap`</span>, <span class="in">`dplyr`</span>, <span class="in">`units`</span>.</span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Práctica 2:** <span class="in">`terra`</span>, <span class="in">`sf`</span>, <span class="in">`tmap`</span>, <span class="in">`exactextractr`</span>, <span class="in">`tidyterra`</span> (y, opcional,</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Práctica 1:** <span class="in">`sf`</span>, <span class="in">`terra`</span>, <span class="in">`spatstat`</span>, <span class="in">`gstat`</span>, <span class="in">`dplyr`</span>, <span class="in">`mapsf`</span>.</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Práctica 2:** <span class="in">`terra`</span>, <span class="in">`sf`</span>, <span class="in">`mapsf`</span>, <span class="in">`exactextractr`</span>, <span class="in">`tidyterra`</span> (y, opcional,</span>
 <span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>  <span class="in">`rstac`</span> / <span class="in">`rsi`</span> para descarga automatizada de imágenes).</span>
 <span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"sf"</span>,<span class="st">"terra"</span>,<span class="st">"spatstat"</span>,<span class="st">"gstat"</span>,<span class="st">"tmap"</span>,<span class="st">"dplyr"</span>,<span class="st">"units"</span>,</span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"exactextractr"</span>,<span class="st">"tidyterra"</span>))</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"sf"</span>,<span class="st">"terra"</span>,<span class="st">"spatstat"</span>,<span class="st">"gstat"</span>,<span class="st">"dplyr"</span>, <span class="st">"mapsf"</span>,</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>                <span class="st">"exactextractr"</span>,<span class="st">"tidyterra"</span>))</span>
 <span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

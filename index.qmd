@@ -33,11 +33,11 @@ no son compatibles con Qt6.
 
 Para la versión en R se requiere R ≥ 4.3 con los paquetes:
 
-- **Práctica 1:** `sf`, `terra`, `spatstat`, `gstat`, `tmap`, `dplyr`, `units`.
-- **Práctica 2:** `terra`, `sf`, `tmap`, `exactextractr`, `tidyterra` (y, opcional,
+- **Práctica 1:** `sf`, `terra`, `spatstat`, `gstat`, `dplyr`, `mapsf`.
+- **Práctica 2:** `terra`, `sf`, `mapsf`, `exactextractr`, `tidyterra` (y, opcional,
   `rstac` / `rsi` para descarga automatizada de imágenes).
 
 ```r
-install.packages(c("sf","terra","spatstat","gstat","tmap","dplyr","units",
-                   "exactextractr","tidyterra"))
+install.packages(c("sf","terra","spatstat","gstat","dplyr", "mapsf",
+                "exactextractr","tidyterra"))
 ```
