@@ -1,6 +1,6 @@
 project:
   type: book
-  output-dir: _output
+  output-dir: docs
 
 lang: es
 bibliography: references.bib
