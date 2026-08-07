@@ -3,7 +3,7 @@
 ::: {.callout-note appearance="simple"}
 **Curso:** Sistema de Información Geográfica (0101140064) · Escuela Profesional de Agronomía · UNSM-T
 **Unidad III · Semanas 14–15** — Teledetección, descarga de imágenes satelitales y cálculo del NDVI.
-**Software:** QGIS 4.0 "Norrköping" (Qt6). Válido también en QGIS 3.44 LTR.
+**Software:** QGIS 4.2 "Belém do Pará" (Qt6). Válido también en QGIS 3.44 LTR.
 :::
 
 ## Introducción
@@ -23,7 +23,7 @@ En esta práctica descargaremos una imagen satelital, calcularemos varios índic
 
 | Recurso | Detalle |
 |---|---|
-| Software | QGIS 4.0 (o 3.44 LTR) |
+| Software | QGIS 4.2 (o 3.44 LTR) |
 | Imagen | Sentinel-2 (10 m) o Landsat 8/9 (30 m) |
 | Portales | Copernicus Browser, USGS EarthExplorer, LandViewer |
 | Límite de parcelas | Capa vectorial (`.gpkg` / `.shp`) |

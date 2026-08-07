@@ -31,7 +31,7 @@ En esta práctica diseñaremos una red de muestreo sobre una parcela, capturarem
 
 ## Preparación del proyecto {#sec-preparacion}
 
-1. Abre QGIS 4.0 y crea un proyecto nuevo: **Proyecto ▸ Nuevo ▸ Guardar**.
+1. Abre QGIS 4.2 y crea un proyecto nuevo: **Proyecto ▸ Nuevo ▸ Guardar**.
 2. Define el SRC del proyecto: barra inferior derecha (icono del globo) ▸ escribe **32718** ▸ selecciona *WGS 84 / UTM zone 18S*.
 3. Carga el límite del área de estudio: **Panel Navegador ▸ Inicio del proyecto** y doble click en el archivo.
 4. Verifica que la capa cae sobre la ubicación correcta añadiendo un mapa base (plugin **NextGIS QuickMapServices** o el conector XYZ de OpenStreetMap).
