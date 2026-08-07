@@ -153,3 +153,37 @@ mf_scale(pos = "bottomright")
 mf_arrow(pos = "topleft")
 mf_title("Interpolación IDW de MO del suelo (%)")
 mf_credits("Datos simulados · WGS 84 / UTM 18S")
+
+#Poligonos de Voronoi
+
+## 1. Cargar los puntos (con la MO) y el área ----
+pts  <- st_read("muestreo_distribucion/Shapefile/Puntos_suelos_voronoi.shp") |> st_transform(32718)
+area <- st_transform(area, 32718)          # asegura metros
+stopifnot("MO" %in% names(pts))            # el shapefile debe traer el campo MO
+
+## 2. Teselación de Voronoi ----
+voro <- st_voronoi(st_union(pts))          # st_union -> MULTIPOINT de entrada
+voro <- st_collection_extract(voro, "POLYGON")
+voro <- st_sf(geometry = voro)
+
+# ¡Clave! st_voronoi devuelve las celdas en orden arbitrario:
+# hay que reasociar la MO a cada celda con una unión espacial.
+voro <- st_join(voro, pts["MO"], join = st_intersects)
+
+# Recortar las celdas al límite del área de estudio
+voro <- st_intersection(voro, st_geometry(area))
+voro <- st_collection_extract(voro, "POLYGON")   # por si el recorte deja bordes mixtos
+
+## 3. Coropleta graduada por MO con Jenks (5 clases) ----
+mf_map(x = voro, var = "MO", type = "choro",
+       breaks = "jenks", nbreaks = 5,      # "jenks" = Rupturas naturales de QGIS
+       pal = "Greens",
+       border = "grey30", lwd = 0.4,
+       leg_title = "MO (%)", leg_pos = "topright", leg_val_rnd = 2)
+mf_map(pts, pch = 20, col = "grey20", cex = 0.5, add = TRUE)          # puntos
+mf_map(st_geometry(area), col = NA, border = "grey10", lwd = 1.5, add = TRUE)
+mf_title("Polígonos de Voronoi — MO del suelo (Jenks)")
+mf_scale(pos = "bottomright")
+mf_arrow(pos = "topleft")
+mf_credits("Datos simulados · WGS 84 / UTM 18S")
+
