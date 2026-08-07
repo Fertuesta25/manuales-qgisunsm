@@ -695,7 +695,40 @@ Figura&nbsp;1.7: Superficie interpolada IDW de la variable y polígonos de Voron
 <span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_scale</span>(<span class="at">pos =</span> <span class="st">"bottomright"</span>)</span>
 <span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_arrow</span>(<span class="at">pos =</span> <span class="st">"topleft"</span>)</span>
 <span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">"Interpolación IDW de MO del suelo (%)"</span>)</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_credits</span>(<span class="st">"Datos simulados · WGS 84 / UTM 18S"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_credits</span>(<span class="st">"Datos simulados · WGS 84 / UTM 18S"</span>)</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="co">#Poligonos de Voronoi</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="do">## 1. Cargar los puntos (con la MO) y el área ----</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>pts  <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"muestreo_distribucion/Shapefile/Puntos_suelos_voronoi.shp"</span>) <span class="sc">|&gt;</span> <span class="fu">st_transform</span>(<span class="dv">32718</span>)</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>area <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(area, <span class="dv">32718</span>)          <span class="co"># asegura metros</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="st">"MO"</span> <span class="sc">%in%</span> <span class="fu">names</span>(pts))            <span class="co"># el shapefile debe traer el campo MO</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="do">## 2. Teselación de Voronoi ----</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>voro <span class="ot">&lt;-</span> <span class="fu">st_voronoi</span>(<span class="fu">st_union</span>(pts))          <span class="co"># st_union -&gt; MULTIPOINT de entrada</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>voro <span class="ot">&lt;-</span> <span class="fu">st_collection_extract</span>(voro, <span class="st">"POLYGON"</span>)</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>voro <span class="ot">&lt;-</span> <span class="fu">st_sf</span>(<span class="at">geometry =</span> voro)</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a><span class="co"># ¡Clave! st_voronoi devuelve las celdas en orden arbitrario:</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="co"># hay que reasociar la MO a cada celda con una unión espacial.</span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>voro <span class="ot">&lt;-</span> <span class="fu">st_join</span>(voro, pts[<span class="st">"MO"</span>], <span class="at">join =</span> st_intersects)</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Recortar las celdas al límite del área de estudio</span></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>voro <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(voro, <span class="fu">st_geometry</span>(area))</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>voro <span class="ot">&lt;-</span> <span class="fu">st_collection_extract</span>(voro, <span class="st">"POLYGON"</span>)   <span class="co"># por si el recorte deja bordes mixtos</span></span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a><span class="do">## 3. Coropleta graduada por MO con Jenks (5 clases) ----</span></span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(<span class="at">x =</span> voro, <span class="at">var =</span> <span class="st">"MO"</span>, <span class="at">type =</span> <span class="st">"choro"</span>,</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>       <span class="at">breaks =</span> <span class="st">"jenks"</span>, <span class="at">nbreaks =</span> <span class="dv">5</span>,      <span class="co"># "jenks" = Rupturas naturales de QGIS</span></span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>       <span class="at">pal =</span> <span class="st">"Greens"</span>,</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>       <span class="at">border =</span> <span class="st">"grey30"</span>, <span class="at">lwd =</span> <span class="fl">0.4</span>,</span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>       <span class="at">leg_title =</span> <span class="st">"MO (%)"</span>, <span class="at">leg_pos =</span> <span class="st">"topright"</span>, <span class="at">leg_val_rnd =</span> <span class="dv">2</span>)</span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(pts, <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">col =</span> <span class="st">"grey20"</span>, <span class="at">cex =</span> <span class="fl">0.5</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)          <span class="co"># puntos</span></span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(<span class="fu">st_geometry</span>(area), <span class="at">col =</span> <span class="cn">NA</span>, <span class="at">border =</span> <span class="st">"grey10"</span>, <span class="at">lwd =</span> <span class="fl">1.5</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">"Polígonos de Voronoi — MO del suelo (Jenks)"</span>)</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_scale</span>(<span class="at">pos =</span> <span class="st">"bottomright"</span>)</span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_arrow</span>(<span class="at">pos =</span> <span class="st">"topleft"</span>)</span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_credits</span>(<span class="st">"Datos simulados · WGS 84 / UTM 18S"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
@@ -709,11 +742,10 @@ Figura&nbsp;1.7: Superficie interpolada IDW de la variable y polígonos de Voron
 <p>Entrega un mapa temático (PDF/JPEG) con:</p>
 <ul>
 <li>La red de muestreo y la variable simbolizada por magnitud.</li>
-<li>Al menos un análisis de patrón (mapa de calor <strong>o</strong> vecino más cercano) con su interpretación.</li>
+<li>Al menos un análisis de patrón (mapa de calor o vecino más cercano) con su interpretación.</li>
 <li>Todos los elementos cartográficos (título, leyenda, escala, norte, grilla, membrete).</li>
 </ul>
 <p>Y una breve interpretación (½ página): ¿el patrón es agrupado, aleatorio o disperso? ¿Qué implica para tu objeto de estudio?</p>
-<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/jUKoip72htY?start=90" title="Descarga de imágenes Sentinel-2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
 
 
 <!-- -->
@@ -1507,26 +1539,52 @@ Tuesta, F. M., y J. Ormeño. 2020. <em>Manual Básico: Sistema de Información G
 <span id="cb5-315"><a href="#cb5-315" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">"Interpolación IDW de MO del suelo (%)"</span>)</span>
 <span id="cb5-316"><a href="#cb5-316" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_credits</span>(<span class="st">"Datos simulados · WGS 84 / UTM 18S"</span>)</span>
 <span id="cb5-317"><a href="#cb5-317" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-318"><a href="#cb5-318" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb5-319"><a href="#cb5-319" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb5-320"><a href="#cb5-320" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-321"><a href="#cb5-321" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb5-322"><a href="#cb5-322" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-323"><a href="#cb5-323" aria-hidden="true" tabindex="-1"></a><span class="fu">## Producto de la práctica</span></span>
+<span id="cb5-318"><a href="#cb5-318" aria-hidden="true" tabindex="-1"></a><span class="co">#Poligonos de Voronoi</span></span>
+<span id="cb5-319"><a href="#cb5-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-320"><a href="#cb5-320" aria-hidden="true" tabindex="-1"></a><span class="do">## 1. Cargar los puntos (con la MO) y el área ----</span></span>
+<span id="cb5-321"><a href="#cb5-321" aria-hidden="true" tabindex="-1"></a>pts  <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"muestreo_distribucion/Shapefile/Puntos_suelos_voronoi.shp"</span>) <span class="sc">|&gt;</span> <span class="fu">st_transform</span>(<span class="dv">32718</span>)</span>
+<span id="cb5-322"><a href="#cb5-322" aria-hidden="true" tabindex="-1"></a>area <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(area, <span class="dv">32718</span>)          <span class="co"># asegura metros</span></span>
+<span id="cb5-323"><a href="#cb5-323" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="st">"MO"</span> <span class="sc">%in%</span> <span class="fu">names</span>(pts))            <span class="co"># el shapefile debe traer el campo MO</span></span>
 <span id="cb5-324"><a href="#cb5-324" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-325"><a href="#cb5-325" aria-hidden="true" tabindex="-1"></a>Entrega un mapa temático (PDF/JPEG) con:</span>
-<span id="cb5-326"><a href="#cb5-326" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-327"><a href="#cb5-327" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>La red de muestreo y la variable simbolizada por magnitud.</span>
-<span id="cb5-328"><a href="#cb5-328" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Al menos un análisis de patrón (mapa de calor **o** vecino más cercano) con su interpretación.</span>
-<span id="cb5-329"><a href="#cb5-329" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Todos los elementos cartográficos (título, leyenda, escala, norte, grilla, membrete).</span>
-<span id="cb5-330"><a href="#cb5-330" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-331"><a href="#cb5-331" aria-hidden="true" tabindex="-1"></a>Y una breve interpretación (½ página): ¿el patrón es agrupado, aleatorio o disperso? ¿Qué implica para tu objeto de estudio?</span>
-<span id="cb5-332"><a href="#cb5-332" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-333"><a href="#cb5-333" aria-hidden="true" tabindex="-1"></a>{{&lt; video https://www.youtube.com/watch?v=jUKoip72htY</span>
-<span id="cb5-334"><a href="#cb5-334" aria-hidden="true" tabindex="-1"></a>    title="Descarga de imcf5733e5-0370-4aae-8689-61bad1dd9ec0<span class="dv">&amp;#xe1;</span>genes Sentinel-2"</span>
-<span id="cb5-335"><a href="#cb5-335" aria-hidden="true" tabindex="-1"></a>    start="90"</span>
-<span id="cb5-336"><a href="#cb5-336" aria-hidden="true" tabindex="-1"></a>    aspect-ratio="16x9"</span>
-<span id="cb5-337"><a href="#cb5-337" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;}}</span></span>
+<span id="cb5-325"><a href="#cb5-325" aria-hidden="true" tabindex="-1"></a><span class="do">## 2. Teselación de Voronoi ----</span></span>
+<span id="cb5-326"><a href="#cb5-326" aria-hidden="true" tabindex="-1"></a>voro <span class="ot">&lt;-</span> <span class="fu">st_voronoi</span>(<span class="fu">st_union</span>(pts))          <span class="co"># st_union -&gt; MULTIPOINT de entrada</span></span>
+<span id="cb5-327"><a href="#cb5-327" aria-hidden="true" tabindex="-1"></a>voro <span class="ot">&lt;-</span> <span class="fu">st_collection_extract</span>(voro, <span class="st">"POLYGON"</span>)</span>
+<span id="cb5-328"><a href="#cb5-328" aria-hidden="true" tabindex="-1"></a>voro <span class="ot">&lt;-</span> <span class="fu">st_sf</span>(<span class="at">geometry =</span> voro)</span>
+<span id="cb5-329"><a href="#cb5-329" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-330"><a href="#cb5-330" aria-hidden="true" tabindex="-1"></a><span class="co"># ¡Clave! st_voronoi devuelve las celdas en orden arbitrario:</span></span>
+<span id="cb5-331"><a href="#cb5-331" aria-hidden="true" tabindex="-1"></a><span class="co"># hay que reasociar la MO a cada celda con una unión espacial.</span></span>
+<span id="cb5-332"><a href="#cb5-332" aria-hidden="true" tabindex="-1"></a>voro <span class="ot">&lt;-</span> <span class="fu">st_join</span>(voro, pts[<span class="st">"MO"</span>], <span class="at">join =</span> st_intersects)</span>
+<span id="cb5-333"><a href="#cb5-333" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-334"><a href="#cb5-334" aria-hidden="true" tabindex="-1"></a><span class="co"># Recortar las celdas al límite del área de estudio</span></span>
+<span id="cb5-335"><a href="#cb5-335" aria-hidden="true" tabindex="-1"></a>voro <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(voro, <span class="fu">st_geometry</span>(area))</span>
+<span id="cb5-336"><a href="#cb5-336" aria-hidden="true" tabindex="-1"></a>voro <span class="ot">&lt;-</span> <span class="fu">st_collection_extract</span>(voro, <span class="st">"POLYGON"</span>)   <span class="co"># por si el recorte deja bordes mixtos</span></span>
+<span id="cb5-337"><a href="#cb5-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-338"><a href="#cb5-338" aria-hidden="true" tabindex="-1"></a><span class="do">## 3. Coropleta graduada por MO con Jenks (5 clases) ----</span></span>
+<span id="cb5-339"><a href="#cb5-339" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(<span class="at">x =</span> voro, <span class="at">var =</span> <span class="st">"MO"</span>, <span class="at">type =</span> <span class="st">"choro"</span>,</span>
+<span id="cb5-340"><a href="#cb5-340" aria-hidden="true" tabindex="-1"></a>       <span class="at">breaks =</span> <span class="st">"jenks"</span>, <span class="at">nbreaks =</span> <span class="dv">5</span>,      <span class="co"># "jenks" = Rupturas naturales de QGIS</span></span>
+<span id="cb5-341"><a href="#cb5-341" aria-hidden="true" tabindex="-1"></a>       <span class="at">pal =</span> <span class="st">"Greens"</span>,</span>
+<span id="cb5-342"><a href="#cb5-342" aria-hidden="true" tabindex="-1"></a>       <span class="at">border =</span> <span class="st">"grey30"</span>, <span class="at">lwd =</span> <span class="fl">0.4</span>,</span>
+<span id="cb5-343"><a href="#cb5-343" aria-hidden="true" tabindex="-1"></a>       <span class="at">leg_title =</span> <span class="st">"MO (%)"</span>, <span class="at">leg_pos =</span> <span class="st">"topright"</span>, <span class="at">leg_val_rnd =</span> <span class="dv">2</span>)</span>
+<span id="cb5-344"><a href="#cb5-344" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(pts, <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">col =</span> <span class="st">"grey20"</span>, <span class="at">cex =</span> <span class="fl">0.5</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)          <span class="co"># puntos</span></span>
+<span id="cb5-345"><a href="#cb5-345" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(<span class="fu">st_geometry</span>(area), <span class="at">col =</span> <span class="cn">NA</span>, <span class="at">border =</span> <span class="st">"grey10"</span>, <span class="at">lwd =</span> <span class="fl">1.5</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-346"><a href="#cb5-346" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">"Polígonos de Voronoi — MO del suelo (Jenks)"</span>)</span>
+<span id="cb5-347"><a href="#cb5-347" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_scale</span>(<span class="at">pos =</span> <span class="st">"bottomright"</span>)</span>
+<span id="cb5-348"><a href="#cb5-348" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_arrow</span>(<span class="at">pos =</span> <span class="st">"topleft"</span>)</span>
+<span id="cb5-349"><a href="#cb5-349" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_credits</span>(<span class="st">"Datos simulados · WGS 84 / UTM 18S"</span>)</span>
+<span id="cb5-350"><a href="#cb5-350" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb5-351"><a href="#cb5-351" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb5-352"><a href="#cb5-352" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-353"><a href="#cb5-353" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb5-354"><a href="#cb5-354" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-355"><a href="#cb5-355" aria-hidden="true" tabindex="-1"></a><span class="fu">## Producto de la práctica</span></span>
+<span id="cb5-356"><a href="#cb5-356" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-357"><a href="#cb5-357" aria-hidden="true" tabindex="-1"></a>Entrega un mapa temático (PDF/JPEG) con:</span>
+<span id="cb5-358"><a href="#cb5-358" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-359"><a href="#cb5-359" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>La red de muestreo y la variable simbolizada por magnitud.</span>
+<span id="cb5-360"><a href="#cb5-360" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Al menos un análisis de patrón (mapa de calor o vecino más cercano) con su interpretación.</span>
+<span id="cb5-361"><a href="#cb5-361" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Todos los elementos cartográficos (título, leyenda, escala, norte, grilla, membrete).</span>
+<span id="cb5-362"><a href="#cb5-362" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-363"><a href="#cb5-363" aria-hidden="true" tabindex="-1"></a>Y una breve interpretación (½ página): ¿el patrón es agrupado, aleatorio o disperso? ¿Qué implica para tu objeto de estudio?</span>
 </code></pre></div><button title="Copiar al portapapeles" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
